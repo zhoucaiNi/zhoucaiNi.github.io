@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import profile from './images/profile.JPG';
 import './App.css';
+import Sidebar from './components/Sidebar'
+import Education from './components/Education';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
-function App() {
+
+function Home() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Sidebar />
+      <img src={profile} className="profile" alt="profile-pic" />
+      <p>
+        Zhoucai Ni
+      </p>
+    </>
   );
+}
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/education" component={Education} />
+      </Switch>
+    </Router>
+  )
 }
 
 export default App;

@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.profile {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  object-position: -60px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
