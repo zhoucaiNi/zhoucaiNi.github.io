@@ -3,6 +3,9 @@ import {
   ProSidebar,
   Menu,
   MenuItem,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
 } from "react-pro-sidebar";
 
 import './Sidebar.css';
@@ -18,19 +21,37 @@ import {
 function Sidebar() {
   return (
     <>
-      <ProSidebar>
-        <Menu iconShape="square">
-          <MenuItem> Home </MenuItem>
-          <MenuItem> Education 
-          <Link to="/education" />
-          </MenuItem>
-          <MenuItem> Project </MenuItem>
-          <MenuItem>
-           Experience 
-           <Link to="/experience"/>
-          </MenuItem>
+      <ProSidebar id="header">
+        <SidebarHeader>
+          <h1> Zhoucai Ni </h1>
+        </SidebarHeader>
+        <SidebarContent>
+          <Menu iconShape="square">
+            <MenuItem>
+              Home
+              <Link to="/" />
+            </MenuItem>
 
-        </Menu>
+            <MenuItem>
+              Education
+              <Link to="/education" />
+            </MenuItem>
+
+            <MenuItem>
+              Project
+              <Link to="/project" />
+            </MenuItem>
+
+            <MenuItem>
+              Experience
+              <Link to="/experience" />
+            </MenuItem>
+
+          </Menu>
+        </SidebarContent>
+        <SidebarFooter>
+          <h1> Footer </h1>
+        </SidebarFooter>
       </ProSidebar>
     </>
   )

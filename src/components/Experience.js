@@ -1,20 +1,17 @@
 import React from 'react';
 import "./Content.css"
-import Profile from './Profile';
+import Profile from './Profile'
 
-function Education() {
-
-
+function Experience() {
   return (
     <>
     <div id="rightContent">
       <Profile />
-      <h1> Education </h1>
-    </div>
-      
+      <h1> Experience </h1>
+      </div>
     </>
   )
 
 }
 
-export default Education;
+export default Experience;

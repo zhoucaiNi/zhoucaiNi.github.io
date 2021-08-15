@@ -1,6 +1,7 @@
 #header {
   position: absolute;
   width: 220px;
+  color: white;
 }
 #header .pro-sidebar {
   height: 100vh;
@@ -21,12 +22,13 @@
   width: 100%;
   min-width: 100%;
 }
+
 #header .pro-sidebar.collapsed {
   width: 80px;
   min-width: 80px;
 }
 #header .pro-sidebar-inner {
-  background-color: white;
+  background-color: gray;
   box-shadow: 0.5px 0.866px 2px 0px rgba(0, 0, 0, 0.15);
 }
 #header .pro-sidebar-inner .pro-sidebar-layout {
@@ -65,4 +67,8 @@
   html {
     overflow: hidden;
   }
+}
+
+menuText{
+  color:violet;
 }
