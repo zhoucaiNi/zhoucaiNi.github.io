@@ -1,18 +1,17 @@
 //import react pro sidebar components
 import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarContent,
-} from "react-pro-sidebar";
+  CDBSidebar,
+  CDBSidebarContent,
+  CDBSidebarFooter,
+  CDBSidebarHeader,
+  CDBSidebarMenu,
+  CDBSidebarMenuItem,
+} from 'cdbreact';
 
-import './Sidebar.css';
-import "react-pro-sidebar/dist/css/styles.css";
+import { GoMarkGithub } from "react-icons/go";
 
 import {
-  Link
+  NavLink
 } from "react-router-dom";
 
 //import icons from react icons
@@ -21,38 +20,65 @@ import {
 function Sidebar() {
   return (
     <>
-      <ProSidebar id="header">
-        <SidebarHeader>
-          <h1> Zhoucai Ni </h1>
-        </SidebarHeader>
-        <SidebarContent>
-          <Menu iconShape="square">
-            <MenuItem>
-              Home
-              <Link to="/" />
-            </MenuItem>
+      <div
+        style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}
+      >
+        <CDBSidebar textColor="#fff" backgroundColor="#2E8B57">
+          <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
+            <NavLink
+              to="/"
+              className="text-decoration-none"
+              style={{ color: 'inherit' }}
+            >
+              Zhoucai Ni
+            </NavLink>
+          </CDBSidebarHeader>
 
-            <MenuItem>
-              Education
-              <Link to="/education" />
-            </MenuItem>
+          <CDBSidebarContent >
+            <CDBSidebarMenu>
 
-            <MenuItem>
-              Project
-              <Link to="/project" />
-            </MenuItem>
+              <NavLink to="/education" exact activeClassName="activeClicked" >
+                <CDBSidebarMenuItem icon="book"> Education
+                  {/* <NavLink to="/education" exact activeClassName="activeClicked" /> */}
+                </CDBSidebarMenuItem>
+              </NavLink>
 
-            <MenuItem>
-              Experience
-              <Link to="/experience" />
-            </MenuItem>
+              <NavLink to="/experience" exact activeClassName="activeClicked" >
+                <CDBSidebarMenuItem icon="columns"> Experience
+                  {/* <NavLink to="/experience" exact activeClassName="activeClicked" /> */}
+                </CDBSidebarMenuItem>
+              </NavLink>
 
-          </Menu>
-        </SidebarContent>
-        <SidebarFooter>
-          <h1> Footer </h1>
-        </SidebarFooter>
-      </ProSidebar>
+              <NavLink to="/project" exact activeClassName="activeClicked" >
+                <CDBSidebarMenuItem icon="sticky-note"> Project
+                  {/* <NavLink to="/project" exact activeClassName="activeClicked" /> */}
+                </CDBSidebarMenuItem>
+              </NavLink>
+
+
+            </CDBSidebarMenu>
+
+          </CDBSidebarContent>
+
+          <CDBSidebarFooter style={{ textAlign: 'center' }}>
+            <div
+              style={{
+                padding: '20px 5px'
+              }}
+            >
+              <a style={{color: "white"}}target="_blank" rel="noreferrer noopener" href="https://github.com/zhoucaiNi">
+                <CDBSidebarMenuItem >
+                  {/* <Button variant="light"> */}
+
+                    <GoMarkGithub />
+                  {/* </Button> */}
+
+                </CDBSidebarMenuItem>
+              </a>
+            </div>
+          </CDBSidebarFooter>
+        </CDBSidebar>
+      </div>
     </>
   )
 }

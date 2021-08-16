@@ -1,11 +1,10 @@
 import Profile from './components/Profile';
 import './App.css';
 import './components/Content.css'
-import Sidebar from './components/Sidebar'
-import Sidebarr from './components/Sidebarr'
-import Education from './components/Education';
-import Experience from './components/Experience';
-import Project from './components/Project';
+import Sidebar from './components/Sidebar';
+import Education from './components/education/Education.js';
+import Experience from './components/experience/Experience.js';
+import Project from './components/project/Project.js';
 
 import {
   BrowserRouter as Router,
@@ -29,7 +28,7 @@ const App = () => {
   return (
     <Router>
       <div style={{ display: 'flex' }} >
-      <Sidebarr />
+      <Sidebar />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/education" component={Education} />
