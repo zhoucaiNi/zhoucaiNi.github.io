@@ -1,0 +1,109 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Jockey One', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  font-family: 'Jockey One', sans-serif;
+  background-color: #ffffff;
+  /* overflow: hidden; */
+}
+
+h1 {
+  letter-spacing: 0.15em;
+}
+
+nav ul {
+  display: flex;
+  gap: 3vw;
+  list-style: none;
+  text-align: center;
+}
+
+nav ul li {
+  /* display: inline-block; */
+  letter-spacing: 0.15em;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 23px;
+}
+
+nav ul li a:hover {
+  /* letter-spacing: 0.20em; */
+  color: #FED377;
+  /* -webkit-text-stroke: 0.5px black; */
+}
+
+#cloud1 {
+  position: relative;
+  height: 15vh;
+  width: 20vw;
+  z-index: 2;
+
+}
+
+#cloud2 {
+  position: relative;
+  height: 15vh;
+  width: 20vw;
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+  z-index: 2;
+}
+
+#sun {
+  height: 100px;
+  z-index: 0;
+}
+
+#foreground {
+  /* top:0px; */
+  position: relative;
+  /* left: 50%; */
+  margin-top: -200px;
+  /* transform: translate(-50%, -50%); */
+  width: 100vw;
+  /* height: 100vh; */
+  z-index: 1;
+}
+
+#svg-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+#clouds {
+  display: flex;
+  flex-direction: row;
+  margin-top: -50px;
+  gap:30vw;
+}
+
+#project-container {
+  margin-top: -5px;
+  background-color: #72B8DF;
+  width: 100vw;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
+
+  nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+  }
+}
