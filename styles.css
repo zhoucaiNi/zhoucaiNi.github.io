@@ -48,38 +48,6 @@ nav ul li a:hover {
   /* -webkit-text-stroke: 0.5px black; */
 }
 
-#cloud1 {
-  position: relative;
-  height: 15vh;
-  width: 20vw;
-  z-index: 2;
-
-}
-
-#cloud2 {
-  position: relative;
-  height: 15vh;
-  width: 20vw;
-  transform: matrix(-1, 0, 0, 1, 0, 0);
-  z-index: 2;
-}
-
-#sun {
-  height: 100px;
-  z-index: 0;
-}
-
-#foreground {
-  /* top:0px; */
-  /* margin-top: 50px; */
-  position: relative;
-  /* left: 50%; */
-  /* transform: translate(-50%, -50%); */
-  width: 80vw;
-  /* height: 100vh; */
-  z-index: 1;
-}
-
 #svg-div {
   display: flex;
   flex-direction: column;
@@ -184,7 +152,46 @@ nav ul li a:hover {
   border-radius: 10px;
 }
 
-@media only screen and (max-width: 600px) {
+section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding: 100px;
+}
+
+#sun {
+  height: 200px;
+  width: 200px;
+  left: 50%;
+  margin-left: -100px;
+  align-self: center;
+}
+
+section img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* opacity: 80%; */
+  animation-name: example;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+  object-fit: cover;
+  /* background-color: #72B8DF; */
+}
+
+@keyframes example {
+  from {
+    opacity: 30%;
+  }
+
+  to {
+    opacity: 100%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
   body {
     background-color: lightblue;
   }
@@ -194,7 +201,13 @@ nav ul li a:hover {
     flex-direction: column;
     gap: 0px;
   }
+
+  #foreground {
+    display: none;
+  }
 }
+
+
 
 @media only screen and (max-width: 1000px) {
 
@@ -297,7 +310,7 @@ object {
 
 #about-container {
   margin-top: 10px;
-  gap:10px;
+  gap: 10px;
   display: flex;
   flex-direction: column;
   /* text-align: left; */
@@ -313,17 +326,17 @@ object {
   width: 35vw;
 }
 
-.start-intro{
+.start-intro {
   font-size: 30px;
   font-weight: bold;
   color: #64d350;
 }
 
-.end-intro{
+.end-intro {
   font-weight: lighter;
 }
 
-.contact{
+.contact {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
@@ -332,10 +345,10 @@ object {
   align-items: center;
 }
 
-.contact div img{
+.contact div img {
   height: 30px;
 }
 
-.contact a{
+.contact a {
   color: #64d350;
 }
