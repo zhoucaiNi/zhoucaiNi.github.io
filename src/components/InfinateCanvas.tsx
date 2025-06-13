@@ -190,7 +190,7 @@ const InfiniteCanvas = () => {
         <Line
           key={`v-${x}`}
           points={[x, startY - 1000, x, endY + 1000]}
-          stroke="rgba(255,255,255,0.1)"
+          stroke="rgba(99, 12, 12, 0.1)"
           strokeWidth={1}
         />
       );
@@ -202,7 +202,7 @@ const InfiniteCanvas = () => {
         <Line
           key={`h-${y}`}
           points={[startX - 1000, y, endX + 1000, y]}
-          stroke="rgba(255,255,255,0.1)"
+          stroke="rgba(173, 18, 18, 0.1)"
           strokeWidth={1}
         />
       );
