@@ -1,7 +1,9 @@
 import React, { useState, useRef, useCallback } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import Konva from "konva";
+
 import { JSX } from "react";
+import ProjectCard from "./ProjectCard";
 
 const InfiniteCanvas = () => {
   const [stageScale, setStageScale] = useState(1);
@@ -116,14 +118,16 @@ const InfiniteCanvas = () => {
 
   // Handle card drag
   const handleCardDragMove = useCallback((e, projectId) => {
+    const stage = e.target.getStage();
+    const scale = stage.scaleX();
+
+    // Get the absolute position in the stage's coordinate system
     const newPos = {
-      x: e.target.x(),
-      y: e.target.y(),
+      x: e.target.absolutePosition().x / scale,
+      y: e.target.absolutePosition().y / scale,
     };
-    setCardPositions((prev) => ({
-      ...prev,
-      [projectId]: newPos,
-    }));
+
+    console.log(newPos);
   }, []);
 
   // Handle card click
@@ -230,68 +234,6 @@ const InfiniteCanvas = () => {
     });
   };
 
-  // Project Card Component
-  const ProjectCard = ({ project }) => {
-    const position = getCardPosition(project);
-
-    return (
-      <Group
-        key={project.id}
-        x={position.x}
-        y={position.y}
-        draggable
-        onDragMove={(e) => handleCardDragMove(e, project.id)}
-        onClick={() => handleCardClick(project)}
-        onTap={() => handleCardClick(project)}
-      >
-        {/* Card background */}
-        <Rect
-          width={300}
-          height={200}
-          fill={project.color}
-          cornerRadius={12}
-          shadowColor="black"
-          shadowBlur={10}
-          shadowOpacity={0.3}
-          shadowOffsetX={0}
-          shadowOffsetY={4}
-        />
-
-        {/* Card title */}
-        <Text
-          x={20}
-          y={20}
-          text={project.title}
-          fontSize={20}
-          fontStyle="bold"
-          fill="white"
-          width={260}
-        />
-
-        {/* Card type badge */}
-        <Rect
-          x={20}
-          y={60}
-          width={project.type.length * 8 + 16}
-          height={28}
-          fill="rgba(255,255,255,0.2)"
-          cornerRadius={14}
-        />
-        <Text x={28} y={68} text={project.type} fontSize={14} fill="white" />
-
-        {/* Instructions */}
-        <Text
-          x={20}
-          y={160}
-          text="Drag to move • Click for details"
-          fontSize={12}
-          fill="rgba(255,255,255,0.8)"
-          width={260}
-        />
-      </Group>
-    );
-  };
-
   return (
     <div className="w-full h-screen bg-white relative overflow-hidden p-10">
       {/* Navigation */}
@@ -315,12 +257,6 @@ const InfiniteCanvas = () => {
         x={stagePos.x}
         y={stagePos.y}
         draggable
-        onDragEnd={(e) => {
-          setStagePos({
-            x: e.target.x(),
-            y: e.target.y(),
-          });
-        }}
         ref={stageRef}
         style={{ backgroundColor: "transparent" }}
       >
@@ -333,7 +269,13 @@ const InfiniteCanvas = () => {
         {/* Project Cards Layer */}
         <Layer>
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              handleCardDragMove={handleCardDragMove}
+              getCardPosition={getCardPosition}
+              isSelected={false}
+            />
           ))}
         </Layer>
       </Stage>
