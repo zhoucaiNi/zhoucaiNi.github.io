@@ -1,11 +1,14 @@
 import "./App.css";
 import InfiniteCanvas from "./components/InfinateCanvas";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   return (
-    <div className="w-full h-screen">
-      <InfiniteCanvas />
-    </div>
+    <ThemeProvider>
+      <div className="w-full h-screen">
+        <InfiniteCanvas />
+      </div>
+    </ThemeProvider>
   );
 }
 

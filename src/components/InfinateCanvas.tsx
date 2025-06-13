@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import Konva from "konva";
+import { useTheme } from "../context/ThemeContext";
 
 import { JSX } from "react";
 import ProjectCard from "./ProjectCard";
@@ -11,6 +12,7 @@ const InfiniteCanvas = () => {
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   const [cardPositions, setCardPositions] = useState({});
   const stageRef = useRef<Konva.Stage>(null);
+  const { isDarkMode, toggleDarkMode } = useTheme();
 
   // Helper function to get card position
   const getCardPosition = (project) => {
@@ -121,25 +123,29 @@ const InfiniteCanvas = () => {
     const endY =
       Math.ceil((-stagePos.y + stageHeight) / stageScale / gridSize) * gridSize;
 
+    const gridColor = isDarkMode
+      ? "rgba(255, 255, 255, 0.1)"
+      : "rgba(99, 12, 12, 0.1)";
+
     // Vertical lines
     for (let x = startX; x <= endX; x += gridSize) {
       lines.push(
         <Line
           key={`v-${x}`}
           points={[x, startY - 1000, x, endY + 1000]}
-          stroke="rgba(99, 12, 12, 0.1)"
+          stroke={gridColor}
           strokeWidth={1}
         />
       );
     }
 
-    // // Horizontal lines
+    // Horizontal lines
     for (let y = startY; y <= endY; y += gridSize) {
       lines.push(
         <Line
           key={`h-${y}`}
           points={[startX - 1000, y, endX + 1000, y]}
-          stroke="rgba(173, 18, 18, 0.1)"
+          stroke={gridColor}
           strokeWidth={1}
         />
       );
@@ -168,15 +174,51 @@ const InfiniteCanvas = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-white relative overflow-hidden p-10">
+    <div
+      className={`w-full h-screen ${
+        isDarkMode ? "bg-gray-900" : "bg-white"
+      } relative overflow-hidden p-10 transition-colors duration-200`}
+    >
       {/* Navigation */}
       <div className="absolute top-4 left-4 z-10 flex gap-2">
-        <button onClick={resetView}>Reset View</button>
-        <button onClick={zoomToFit}>Fit All</button>
+        <button
+          onClick={resetView}
+          className={`px-3 py-1 rounded-lg ${
+            isDarkMode
+              ? "bg-gray-700 text-white hover:bg-gray-600"
+              : "bg-gray-100 hover:bg-gray-200"
+          }`}
+        >
+          Reset View
+        </button>
+        <button
+          onClick={zoomToFit}
+          className={`px-3 py-1 rounded-lg ${
+            isDarkMode
+              ? "bg-gray-700 text-white hover:bg-gray-600"
+              : "bg-gray-100 hover:bg-gray-200"
+          }`}
+        >
+          Fit All
+        </button>
+        <button
+          onClick={toggleDarkMode}
+          className={`px-3 py-1 rounded-lg ${
+            isDarkMode
+              ? "bg-gray-700 text-white hover:bg-gray-600"
+              : "bg-gray-100 hover:bg-gray-200"
+          }`}
+        >
+          {isDarkMode ? "🌞" : "🌙"}
+        </button>
       </div>
 
       {/* Zoom indicator */}
-      <div className="absolute top-4 right-4 z-10 px-3 py-2 bg-red-500 backdrop-blur-sm text-white rounded-lg">
+      <div
+        className={`absolute top-4 right-4 z-10 px-3 py-2 ${
+          isDarkMode ? "bg-red-600" : "bg-red-500"
+        } backdrop-blur-sm text-white rounded-lg`}
+      >
         {Math.round(stageScale * 100)}%
       </div>
 
@@ -214,7 +256,11 @@ const InfiniteCanvas = () => {
       </Stage>
 
       {/* Instructions */}
-      <div className="absolute bottom-4 left-4 text-green-500 text-sm">
+      <div
+        className={`absolute bottom-4 left-4 ${
+          isDarkMode ? "text-green-400" : "text-green-500"
+        } text-sm`}
+      >
         <p>
           • Drag canvas to pan • Scroll to zoom • Drag cards to move • Click
           cards for details
