@@ -4,80 +4,13 @@ import Konva from "konva";
 
 import { JSX } from "react";
 import ProjectCard from "./ProjectCard";
+import { projects } from "../utility/Constants";
 
 const InfiniteCanvas = () => {
   const [stageScale, setStageScale] = useState(1);
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   const [cardPositions, setCardPositions] = useState({});
   const stageRef = useRef<Konva.Stage>(null);
-
-  // Sample project data
-  const projects = [
-    {
-      id: 1,
-      title: "E-commerce Platform",
-      type: "Web App",
-      x: 100,
-      y: 100,
-      color: "#3B82F6",
-    },
-    {
-      id: 2,
-      title: "Mobile Banking App",
-      type: "Mobile",
-      x: 400,
-      y: 150,
-      color: "#10B981",
-    },
-    {
-      id: 3,
-      title: "Dashboard Analytics",
-      type: "Dashboard",
-      x: 700,
-      y: 80,
-      color: "#8B5CF6",
-    },
-    {
-      id: 4,
-      title: "Social Media Tool",
-      type: "Web App",
-      x: 200,
-      y: 350,
-      color: "#EF4444",
-    },
-    {
-      id: 5,
-      title: "Fitness Tracker",
-      type: "Mobile",
-      x: 550,
-      y: 400,
-      color: "#F97316",
-    },
-    {
-      id: 6,
-      title: "Portfolio Website",
-      type: "Website",
-      x: 800,
-      y: 300,
-      color: "#EC4899",
-    },
-    {
-      id: 7,
-      title: "Video Streaming",
-      type: "Web App",
-      x: 150,
-      y: 600,
-      color: "#6366F1",
-    },
-    {
-      id: 8,
-      title: "Task Manager",
-      type: "Productivity",
-      x: 500,
-      y: 650,
-      color: "#14B8A6",
-    },
-  ];
 
   // Helper function to get card position
   const getCardPosition = (project) => {
