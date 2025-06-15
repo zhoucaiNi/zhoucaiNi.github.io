@@ -1,18 +1,11 @@
 // Project data based on portfolio website
 
-// Import images
-import sliderImage from "../assets/sliderFun.png";
-import sidequestImage from "../assets/sidequest.png";
-import halfcupImage from "../assets/halfcup.png";
-import chatappImage from "../assets/chatapp.png";
-import searchEngineImage from "../assets/searchEngine.png";
-
 export const projects = [
   {
     id: 1,
     title: "Slider.Fun",
     type: "Web Game",
-    x: 100,
+    x: 0,
     y: 100,
     color: "#3B82F6",
     description:
@@ -26,7 +19,7 @@ export const projects = [
     id: 2,
     title: "SideQuest",
     type: "Mobile App",
-    x: 400,
+    x: 0,
     y: 150,
     color: "#10B981",
     description:
@@ -39,7 +32,7 @@ export const projects = [
     id: 3,
     title: "Half Cup",
     type: "Web App",
-    x: 700,
+    x: 0,
     y: 80,
     color: "#8B5CF6",
     description:
@@ -52,7 +45,7 @@ export const projects = [
     id: 4,
     title: "Online Chat App",
     type: "Web App",
-    x: 200,
+    x: 0,
     y: 350,
     color: "#EF4444",
     description:
@@ -65,7 +58,7 @@ export const projects = [
     id: 5,
     title: "Tiny Search Engine",
     type: "C Program",
-    x: 550,
+    x: 0,
     y: 400,
     color: "#F97316",
     description:
@@ -78,7 +71,7 @@ export const projects = [
     id: 6,
     title: "Animal Shelter ML",
     type: "Machine Learning",
-    x: 800,
+    x: 0,
     y: 300,
     color: "#EC4899",
     description:
@@ -91,7 +84,7 @@ export const projects = [
     id: 7,
     title: "Poet-GPT",
     type: "Machine Learning",
-    x: 150,
+    x: 0,
     y: 600,
     color: "#6366F1",
     description:
@@ -104,7 +97,7 @@ export const projects = [
     id: 8,
     title: "Autonomous Robot Delivery",
     type: "Robotics",
-    x: 500,
+    x: 0,
     y: 650,
     color: "#14B8A6",
     description:
@@ -114,3 +107,47 @@ export const projects = [
     link: "mailto:nizhoucai@gmail.com",
   },
 ];
+
+export const initialTextElements: TextElement[] = [
+  {
+    id: 9,
+    text: "Sample Text",
+    x: 400,
+    y: 300,
+    fontSize: 24,
+    fontFamily: "Jockey One",
+    fontStyle: "normal",
+    fill: null,
+  },
+  {
+    id: 10,
+    text: "Zhoucai Ni",
+    x: 400,
+    y: 200,
+    fontSize: 48,
+    fontFamily: "Jockey One",
+    fontStyle: "normal",
+    fill: null,
+  },
+  {
+    id: 11,
+    text: "Software Engineer",
+    x: 400,
+    y: 250,
+    fontSize: 24,
+    fontFamily: "Jockey One",
+    fontStyle: "normal",
+    fill: null,
+  },
+];
+
+export interface TextElement {
+  id: number;
+  text: string;
+  x: number;
+  y: number;
+  fontSize: number;
+  fontFamily: string;
+  fontStyle: string;
+  fill: string | null;
+}

@@ -1,8 +1,11 @@
 import React from "react";
-import { Group, Rect, Text } from "react-konva";
+import { Rect, Text } from "react-konva";
 import { useTheme } from "../context/ThemeContext";
+import BaseCanvasComponent, {
+  BaseCanvasComponentProps,
+} from "./BaseCanvasComponent";
 
-type ProjectCardProps = {
+interface ProjectCardProps extends BaseCanvasComponentProps {
   project: {
     id: number;
     title: string;
@@ -12,7 +15,8 @@ type ProjectCardProps = {
   handleCardDragMove: (e: any, projectId: number) => void;
   getCardPosition: (project: any) => { x: number; y: number };
   isSelected: boolean;
-};
+  onSelect: (cardId: string) => void;
+}
 
 // Project Card Component
 const ProjectCard = ({
@@ -20,22 +24,36 @@ const ProjectCard = ({
   handleCardDragMove,
   getCardPosition,
   isSelected,
+  onSelect,
 }: ProjectCardProps) => {
   const position = getCardPosition(project);
   const { isDarkMode } = useTheme();
 
+  const cardWidth = 300;
+  const cardHeight = 200;
+
+  // Handle card drag move
+  const handleDragMove = (e: any, id: string) => {
+    handleCardDragMove(e, project.id);
+  };
+
   return (
-    <Group
-      key={project.id}
+    <BaseCanvasComponent
+      id={project.id.toString()}
       x={position.x}
       y={position.y}
-      draggable
-      onDragMove={(e) => handleCardDragMove(e, project.id)}
+      isSelected={isSelected}
+      onSelect={onSelect}
+      onDragMove={handleDragMove}
+      width={cardWidth}
+      height={cardHeight}
+      showSelectionBorder={true}
+      showHoverEffect={true}
     >
       {/* Card background */}
       <Rect
-        width={300}
-        height={200}
+        width={cardWidth}
+        height={cardHeight}
         fill={project.color}
         cornerRadius={12}
         shadowColor={isDarkMode ? "white" : "black"}
@@ -76,7 +94,7 @@ const ProjectCard = ({
         fill={isDarkMode ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.8)"}
         width={260}
       />
-    </Group>
+    </BaseCanvasComponent>
   );
 };
 

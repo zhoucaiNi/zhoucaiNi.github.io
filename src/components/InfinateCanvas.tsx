@@ -1,16 +1,27 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import Konva from "konva";
 import { useTheme } from "../context/ThemeContext";
 
 import { JSX } from "react";
 import ProjectCard from "./ProjectCard";
-import { projects } from "../utility/Constants";
+import TextComponent from "./TextComponent";
+import {
+  projects,
+  initialTextElements,
+  TextElement,
+} from "../utility/Constants";
 
 const InfiniteCanvas = () => {
   const [stageScale, setStageScale] = useState(1);
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   const [cardPositions, setCardPositions] = useState({});
+
+  const [textElements, setTextElements] =
+    useState<TextElement[]>(initialTextElements);
+
+  const [selectedTextId, setSelectedTextId] = useState<string | null>(null);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const stageRef = useRef<Konva.Stage>(null);
   const { isDarkMode, toggleDarkMode } = useTheme();
 
@@ -53,16 +64,54 @@ const InfiniteCanvas = () => {
 
   // Handle card drag
   const handleCardDragMove = useCallback((e, projectId) => {
-    const stage = e.target.getStage();
-    const scale = stage.scaleX();
+    console.log(e);
+  }, []);
 
-    // Get the absolute position in the stage's coordinate system
-    const newPos = {
-      x: e.target.absolutePosition().x / scale,
-      y: e.target.absolutePosition().y / scale,
-    };
+  // Handle card selection
+  const handleCardSelect = useCallback((cardId: string) => {
+    setSelectedCardId(cardId);
+    setSelectedTextId(null); // Deselect text when selecting card
+  }, []);
 
-    console.log(newPos);
+  // Handle text selection
+  const handleTextSelect = useCallback((textId: string) => {
+    setSelectedTextId(textId);
+    setSelectedCardId(null); // Deselect card when selecting text
+  }, []);
+
+  // Handle text drag
+  const handleTextDragMove = useCallback((e: any, textId: string) => {
+    console.log(e);
+  }, []);
+
+  // Handle text resize
+  const handleTextResize = useCallback(
+    (textId: number, newFontSize: number) => {
+      setTextElements((prev) =>
+        prev.map((text) =>
+          text.id === textId ? { ...text, fontSize: newFontSize } : text
+        )
+      );
+    },
+    []
+  );
+
+  // Handle text content change
+  const handleTextChange = useCallback((textId: number, newText: string) => {
+    setTextElements((prev) =>
+      prev.map((text) =>
+        text.id === textId ? { ...text, text: newText } : text
+      )
+    );
+  }, []);
+
+  // Handle stage click to deselect all
+  const handleStageClick = useCallback((e) => {
+    // Check if clicked on empty area
+    if (e.target === e.target.getStage()) {
+      setSelectedTextId(null);
+      setSelectedCardId(null);
+    }
   }, []);
 
   // Handle card click
@@ -154,25 +203,6 @@ const InfiniteCanvas = () => {
     return lines;
   };
 
-  // Generate connection lines
-  const generateConnectionLines = () => {
-    return projects.slice(0, -1).map((project, index) => {
-      const nextProject = projects[index + 1];
-      const pos1 = getCardPosition(project);
-      const pos2 = getCardPosition(nextProject);
-
-      return (
-        <Line
-          key={`connection-${project.id}`}
-          points={[pos1.x + 150, pos1.y + 100, pos2.x + 150, pos2.y + 100]}
-          stroke="rgba(255,255,255,0.1)"
-          strokeWidth={2}
-          dash={[5, 5]}
-        />
-      );
-    });
-  };
-
   return (
     <div
       className={`w-full h-screen ${
@@ -233,39 +263,54 @@ const InfiniteCanvas = () => {
         y={stagePos.y}
         draggable
         ref={stageRef}
+        onClick={handleStageClick}
+        onTap={handleStageClick}
         style={{ backgroundColor: "transparent" }}
       >
         {/* Grid Layer */}
         <Layer>{generateGridLines()}</Layer>
-
-        {/* Connection Lines Layer */}
-        <Layer>{generateConnectionLines()}</Layer>
 
         {/* Project Cards Layer */}
         <Layer>
           {projects.map((project) => (
             <ProjectCard
               key={project.id}
+              id={project.id.toString()}
+              x={project.x}
+              y={project.y}
+              onDragMove={handleCardDragMove}
+              children={null}
               project={project}
               handleCardDragMove={handleCardDragMove}
               getCardPosition={getCardPosition}
-              isSelected={false}
+              isSelected={selectedCardId === project.id.toString()}
+              onSelect={handleCardSelect}
+            />
+          ))}
+        </Layer>
+
+        {/* Text Elements Layer */}
+        <Layer>
+          {textElements.map((textElement) => (
+            <TextComponent
+              key={textElement.id}
+              id={textElement.id.toString()}
+              text={textElement.text}
+              x={textElement.x}
+              y={textElement.y}
+              fontSize={textElement.fontSize}
+              fontFamily={textElement.fontFamily}
+              fontStyle={textElement.fontStyle}
+              fill={textElement.fill}
+              isSelected={selectedTextId === textElement.id.toString()}
+              onSelect={handleTextSelect}
+              onDragMove={handleTextDragMove}
+              onResize={handleTextResize}
+              onTextChange={handleTextChange}
             />
           ))}
         </Layer>
       </Stage>
-
-      {/* Instructions */}
-      <div
-        className={`absolute bottom-4 left-4 ${
-          isDarkMode ? "text-green-400" : "text-green-500"
-        } text-sm`}
-      >
-        <p>
-          • Drag canvas to pan • Scroll to zoom • Drag cards to move • Click
-          cards for details
-        </p>
-      </div>
     </div>
   );
 };
