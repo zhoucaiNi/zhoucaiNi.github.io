@@ -1,331 +1,303 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zhoucai Ni · Projects</title>
+  <meta name="description" content="Projects by Zhoucai Ni, a software engineer in San Francisco: AR interior design, Slider.fun, an autonomous delivery robot and more.">
+  <meta property="og:title" content="Zhoucai Ni · Projects">
+  <meta property="og:description" content="Projects by Zhoucai Ni, a software engineer in San Francisco: AR interior design, Slider.fun, an autonomous delivery robot and more.">
+  <meta property="og:image" content="https://zhoucai.me/assets/personal.jpg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23FED377'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jockey+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Jockey+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Runs before the page paints, so the right sky shows immediately.
+    // Day/night follows local time; a toggle (sessionStorage) overrides it for this visit.
+    window.setSky = function (theme) {
+      var root = document.documentElement;
+      var now = new Date();
+      var h = now.getHours() + now.getMinutes() / 60;
+      var phase = h < 5.5 || h >= 19.5 ? 'night' : h < 7.5 ? 'dawn' : h >= 17.5 ? 'dusk' : 'day';
+      var natural = phase === 'night' ? 'dark' : 'light';
+      theme = theme || natural;
+      // Where the sun (or moon) sits on its arc: 0 = rising on the left, 1 = setting on the right.
+      var p = theme !== natural ? 0.5 : theme === 'dark' ? ((h - 18 + 24) % 24) / 12 : (h - 6) / 12;
+      p = Math.min(1, Math.max(0, p));
+      var height = Math.sin(Math.PI * p);
+      root.dataset.phase = phase;
+      root.dataset.theme = theme;
+      root.style.setProperty('--sun-top', (2 + (1 - height) * 40).toFixed(1) + '%');
+      root.style.setProperty('--sun-left', (25 + p * 50).toFixed(1) + '%');
+    };
+    document.documentElement.classList.add('js');
+    var saved = null;
+    try { saved = sessionStorage.getItem('theme'); } catch (e) {}
+    window.setSky(saved);
+  </script>
+  <script src="site.js" defer></script>
 </head>
 
-<body id="project">
-  <h1> Zhoucai Ni</h1>
-  <div>
-    <nav class="stroke">
+<body class="page-projects">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="title" href="index.html">Zhoucai Ni</a>
+    <nav class="site-nav" aria-label="Main">
       <ul>
-        <li><a style="color: #72B8DF;" href="index.html">Projects</a></li>
+        <li><a href="index.html" aria-current="page">Projects</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- <li><a href="film.html">Contact</a></li> -->
         <li><a href="photo.html">Other.</a></li>
       </ul>
     </nav>
-  </div>
+    <button class="theme-toggle" type="button" aria-label="Switch to night mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
+  </header>
 
-  <section>
-    <img src="assets/sun.svg" id="sun">
-    <img src="assets/index_left.svg" id="foreground" style="z-index: 3;">
-    <img src="assets/background.svg" style="z-index: 2;">
-  </section>
+  <main id="main">
+    <div class="hero">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="sun" aria-hidden="true"></div>
+      <img class="layer back" src="assets/background.svg" alt="">
+      <img class="layer front" src="assets/index_left.svg" alt="">
+      <a class="scroll-cue" href="#projects">See projects
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </a>
+    </div>
 
-
-  <div id="project-container">
-    <img src="assets/lily.svg" class="lily">
-
-    <h1> Projects </h1>
-    <!-- Project start  -->
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Slider.Fun </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/sliderFun.png" class="project-img">
-        </div>
-        <div class="project-detail">
-          <p class="project-text"> Slider is a photo editing puzzle game. You use the sliders to edit the unedited
-            photo, aiming to match the (edited) target photo.
-            As you complete more puzzles, your photo editing skills will improve.
-          </p>
-          <p class="project-short-text"> Educational Photo-Editing Web Game </p>
-          <div class="project-detail-side">
-            <p> MongoDB, Express, React, Node.Js, Firebase </p>
-            <a href="https://www.slider.fun" target="_blank"><button> learn more </button>
-            </a>
+    <section class="pond" id="projects" aria-labelledby="projects-title">
+      <img class="lily lily-1" src="assets/lily.svg" alt="" aria-hidden="true">
+      <img class="lily lily-2" src="assets/lily.svg" alt="" aria-hidden="true">
+      <img class="lily lily-3" src="assets/lily.svg" alt="" aria-hidden="true">
+      <h1 id="projects-title">Projects</h1>
+      <ul class="projects">
+        <li class="project-box reveal" id="ar-interior-design">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Augmented Reality Interior Design</h2>
+            <span class="project-date">Apr 2025</span>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- Project start  -->
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> SideQuest </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/sidequest.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text">SideQuest is an life engagement app that would send you a real life task every day to
-            promote self-improvment or social interactions. I created this as a final project for a full stack
-            development class. </p>
-          <p class="project-short-text"> Life Engagement App</p>
-          <div class="project-detail-side">
-            <p> Express, React-Native, Node.Js, MongoDB </p>
-            <a href="https://github.com/dartmouth-cs52-22S/project-sidequest" target="_blank"><button> learn more
-              </button>
-            </a>
+          <div class="project-overall">
+            <div class="project-pic project-pic--tall">
+              <img src="assets/ar-interior-design.jpg" width="1000" height="1333" loading="lazy" decoding="async" alt="A person wearing a VR headset points at floating tile samples, previewing blue tiles on a bathroom wall.">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">iF Design Award winner, chosen from 11,000 projects</p>
+              <p>AR entity selection for interior design, built in Unity and ARKit. Raycasting and spatial plane detection let you pick out walls precisely: over 95% interaction accuracy in user testing, and 40% faster selection with custom hit-testing.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>Unity, C#, ARKit</p>
+              <a class="btn" href="https://ifdesign.com/en/winner-ranking/project/augmented-reality-interior-design/687052">see the award</a>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Project -->
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Half Cup </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/halfcup.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text"> An online tournament bracket management app that allows users to create and share
-            brackets. I created this as a personal project for my friends and I.
-          </p>
-          <p class="project-short-text"> Online Chat App </p>
-          <div class="project-detail-side">
-            <p> Express, React, Node.Js, Firebase, Redux</p>
-            <a href="https://halfcuphalfcup.com" target="_blank"><button> learn more </button>
-            </a>
+        </li>
+        <li class="project-box reveal" id="slider-fun">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Slider.fun</h2>
+            <span class="project-date">Jun 2024</span>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- Project 1 -->
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Online Chat App </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/chatapp.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text"> Personal project I built to learn more about react and how online message apps work.
-          </p>
-          <p class="project-short-text"> Online Chat App </p>
-          <div class="project-detail-side">
-            <p> Express, React, Node.Js, Firebase </p>
-            <a href="https://chat-app-g5e1.onrender.com/" target="_blank"><button> learn more </button>
-            </a>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/sliderFun.jpg" width="1200" height="815" loading="lazy" decoding="async" alt="Screenshot of the Slider.fun photo-editing game">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Photo-editing puzzle game · 1,000+ plays in launch week</p>
+              <p>Slider is a photo-editing puzzle game. You use the sliders to edit an unedited photo until it matches the edited target, and your editing skills improve as you solve more puzzles. I led a team of 5 engineers; features include filters, layers and RMS-deviation scoring.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>MongoDB, Express, React, Node.js, Firebase</p>
+              <a class="btn" href="https://www.slider.fun">learn more<span class="sr-only"> about Slider.fun</span></a>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Tiny Search Engine </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/tse.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text"> Final Project for a Software Implementation class based in C. Program is based
-            off of the crawler, indexer and querier implementation of early Google search and page rank. </p>
-          <p class="project-short-text"> Early Google Search Implementation in C </p>
-          <div class="project-detail-side">
-            <p> C, MakeFile, Bash, Shell </p>
-            <a href="https://github.com/zhoucaiNi/Tiny-Search-Engine" target="_blank"><button> learn more </button></a>
+        </li>
+        <li class="project-box reveal" id="robot-delivery">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Autonomous Robot Delivery System</h2>
+            <span class="project-date">Jan 2024</span>
           </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Animal Shelter Machine Learning </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/isef.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text">A supervised machine learning software designed to help animal shelter maximize their
-            resource allocation. A finalist project for the International Science and Engineering Fair in 2022. </p>
-          <p class="project-short-text"> Animal Shelter Maximizing Machine Learning Program</p>
-          <div class="project-detail-side">
-            <p> Python, NLTK, PyTorch, Pandas </p>
-            <a href="https://github.com/zhoucaiNi/Machine-Learning-with-Shelter-Pet-Outcome"><button>
-                learn more
-              </button> </a>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/robotics.jpg" width="938" height="894" loading="lazy" decoding="async" alt="Map of a robot&#x27;s planned delivery route through Hanover, NH">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Self-driving delivery robot for Hanover, NH</p>
+              <p>I led a team of 3 to build a delivery robot that maps and navigates the town, including GPS-denied areas, using SLAM. A* handles point-to-point routing and the Chinese Postman algorithm covers every street, cutting total route length by 22% compared with naive traversal. The code is private because it contains API keys, so email me if you&#x27;d like to learn more.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>Python, ROS, RViz, OpenStreetMap, SLAM</p>
+              <a class="btn" href="mailto:nizhoucai@gmail.com">email me about it</a>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <img src="assets/lily.svg" class="lily-2">
-
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Poet-GPT </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/poet.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text"> This LLM uses Pytorch's GPT2 and a dataset of poems from The Poetry Foundation to
-            train a neural network that generates new poetry based on a prompt. </p>
-          <p class="project-short-text"> Generative LLM for Poems</p>
-          <div class="project-detail-side">
-            <p> PyTorch, Python, NLTK, Pandas, Transformers </p>
-            <a href="https://github.com/zhoucaiNi/poet-gpt-2" target="_blank"><button> learn more </button></a>
+        </li>
+        <li class="project-box reveal" id="sidequest">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>SideQuest</h2>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Autonomous Robot Delivery System </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/robotics.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text"> A self-delivery robotics system designed to traverse the town of Hanover, NH. It
-            implements A* algorithm and Chinese Postman Algorithm to optimize path planning. The codebase is private
-            since it contains some api keys so if you want to learn more please email me!
-          </p>
-          <p class="project-short-text">Autonomous Robot Delivery System with A* and Chinese Postman algo. </p>
-          <div class="project-detail-side">
-            <p> ROS, Rviz, Python </p>
-            <a href="mailto: nizhoucai@gmail.com" target="_blank"><button> contact me for more info! </button>
-            </a>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/sidequest.jpg" width="1200" height="689" loading="lazy" decoding="async" alt="Screenshots of the SideQuest mobile app">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Life engagement app</p>
+              <p>SideQuest sends you a real-life task every day to encourage self-improvement and social interaction. I built it as the final project for a full-stack development class.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>Express, React Native, Node.js, MongoDB</p>
+              <a class="btn" href="https://github.com/dartmouth-cs52-22S/project-sidequest">learn more<span class="sr-only"> about SideQuest</span></a>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Photography Landing Page </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/photo-landing.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text">A photography landing page clone that is coded using pure css and html. </p>
-          <p class="project-short-text"> photography landing page clone that is coded using pure css and html.</p>
-          <div class="project-detail-side">
-            <p> Html, CSS </p>
-            <a href="https://cs52-lab1.onrender.com/" target="_blank"><button> learn more </button></a>
+        </li>
+        <li class="project-box reveal" id="half-cup">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Half Cup</h2>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> Simon Says Clone </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/Simon.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text"> A Html and Javascript clone of the classic Simon Says game. Comes with some
-            additional features such as night mode and custom pattern length.</p>
-          <p class="project-short-text"> A Html and Javascript clone of the classic Simon Says game.</p>
-          <div class="project-detail-side">
-            <p> Html, Css, Javascript </p>
-            <a href="https://marmalade-shadowed-lan.glitch.me/" target="_blank"><button> learn more </button></a>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/halfcup.jpg" width="1200" height="621" loading="lazy" decoding="async" alt="Screenshot of a Half Cup tournament bracket">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Tournament bracket app</p>
+              <p>An online tournament bracket manager for creating and sharing brackets. I built it as a personal project for my friends and me.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>Express, React, Node.js, Firebase, Redux</p>
+              <a class="btn" href="https://halfcuphalfcup.com">learn more<span class="sr-only"> about Half Cup</span></a>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-box">
-      <div style="padding-top: -5px;">
-        <span class="red-dot"> </span>
-        <span class="yellow-dot"> </span>
-        <span class="green-dot"> </span>
-      </div>
-      <h2> How I Met Your Mother Character Quiz </h2>
-      <div class="project-overall">
-        <div class="project-pic">
-          <img src="assets/himym.png" class="project-img">
-        </div>
-
-        <div class="project-detail">
-          <p class="project-text">A Javascript based web quiz to determine which How I Met Your Mother character you
-            are. The
-            questions are centered around basic personal interest and Dartmouth College culture. </p>
-          <p class="project-short-text"> A Javascript based web quiz to determine which How I Met Your Mother character
-            you are.</p>
-          <div class="project-detail-side">
-            <p> Html, Css, Javascript </p>
-            <a href="https://spiffy-selkie-f19357.netlify.app/" target="_blank"> <button> learn more </button></a>
+        </li>
+        <li class="project-box reveal" id="chat-app">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Online Chat App</h2>
           </div>
-        </div>
-      </div>
-    </div>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/chatapp.jpg" width="1200" height="816" loading="lazy" decoding="async" alt="Screenshot of the chat app&#x27;s conversation view">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Real-time messaging</p>
+              <p>A personal project I built to learn more about React and how online messaging apps work.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>Express, React, Node.js, Firebase</p>
+              <a class="btn" href="https://chat-app-g5e1.onrender.com/">learn more<span class="sr-only"> about Online Chat App</span></a>
+            </div>
+          </div>
+        </li>
+        <li class="project-box reveal" id="tiny-search-engine">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Tiny Search Engine</h2>
+          </div>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/tse.jpg" width="1200" height="657" loading="lazy" decoding="async" alt="Terminal output from the Tiny Search Engine querier">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Early Google search, implemented in C</p>
+              <p>Final project for a software design class, written in C. It follows the crawler, indexer and querier design of early Google search and PageRank.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>C, Make, Bash</p>
+              <a class="btn" href="https://github.com/zhoucaiNi/Tiny-Search-Engine">learn more<span class="sr-only"> about Tiny Search Engine</span></a>
+            </div>
+          </div>
+        </li>
+        <li class="project-box reveal" id="animal-shelter-ml">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Animal Shelter Machine Learning</h2>
+            <span class="project-date">2022</span>
+          </div>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/isef.jpg" width="1200" height="657" loading="lazy" decoding="async" alt="Charts from the animal shelter machine learning project">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">ISEF 2022 finalist</p>
+              <p>Supervised machine learning software that helps animal shelters allocate their resources. A finalist project at the International Science and Engineering Fair in 2022.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>Python, PyTorch, NLTK, Pandas</p>
+              <a class="btn" href="https://github.com/zhoucaiNi/Machine-Learning-with-Shelter-Pet-Outcome">learn more<span class="sr-only"> about Animal Shelter Machine Learning</span></a>
+            </div>
+          </div>
+        </li>
+        <li class="project-box reveal" id="poet-gpt">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Poet-GPT</h2>
+          </div>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/poet.jpg" width="1200" height="583" loading="lazy" decoding="async" alt="A poem generated by Poet-GPT from a prompt">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Generative language model for poems</p>
+              <p>Fine-tunes GPT-2 in PyTorch on a dataset of poems from the Poetry Foundation to generate new poetry from a prompt.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>Python, PyTorch, Transformers, NLTK, Pandas</p>
+              <a class="btn" href="https://github.com/zhoucaiNi/poet-gpt-2">learn more<span class="sr-only"> about Poet-GPT</span></a>
+            </div>
+          </div>
+        </li>
+        <li class="project-box reveal" id="photography-landing">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Photography Landing Page</h2>
+          </div>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/photo-landing.jpg" width="1200" height="615" loading="lazy" decoding="async" alt="Screenshot of the photography landing page">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Pure HTML and CSS</p>
+              <p>A photography landing page clone, coded in plain HTML and CSS.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>HTML, CSS</p>
+              <a class="btn" href="https://cs52-lab1.onrender.com/">learn more<span class="sr-only"> about Photography Landing Page</span></a>
+            </div>
+          </div>
+        </li>
+        <li class="project-box reveal" id="simon-says">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>Simon Says Clone</h2>
+          </div>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/Simon.jpg" width="1200" height="657" loading="lazy" decoding="async" alt="Screenshot of the Simon Says game board">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Classic memory game</p>
+              <p>An HTML and JavaScript clone of the classic Simon Says game, with extras like night mode and custom pattern length.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>HTML, CSS, JavaScript</p>
+              <a class="btn" href="https://marmalade-shadowed-lan.glitch.me/">learn more<span class="sr-only"> about Simon Says Clone</span></a>
+            </div>
+          </div>
+        </li>
+        <li class="project-box reveal" id="himym-quiz">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="project-head">
+            <h2>How I Met Your Mother Character Quiz</h2>
+          </div>
+          <div class="project-overall">
+            <div class="project-pic">
+              <img src="assets/himym.jpg" width="1200" height="657" loading="lazy" decoding="async" alt="Screenshot of the How I Met Your Mother quiz">
+            </div>
+            <div class="project-detail">
+              <p class="project-tagline">Which character are you?</p>
+              <p>A JavaScript web quiz that tells you which How I Met Your Mother character you are. The questions center on personal interests and Dartmouth College culture.</p>
+              <p class="project-tech"><span class="sr-only">Built with: </span>HTML, CSS, JavaScript</p>
+              <a class="btn" href="https://spiffy-selkie-f19357.netlify.app/">learn more<span class="sr-only"> about How I Met Your Mother Character Quiz</span></a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
 
-    <div style="z-index: 1;">
-      <nav class="stroke">
-        <ul>
-          <li><a style="color: #ffffff;" href="index.html">Projects</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="photo.html">Other.</a></li>
-        </ul>
-      </nav>
-    </div>
+  <footer class="site-footer">
+    <nav class="site-nav" aria-label="Footer">
+      <ul>
+        <li><a href="index.html" aria-current="page">Projects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="photo.html">Other.</a></li>
+      </ul>
+    </nav>
+    <p>© 2026 Zhoucai Ni · <a href="mailto:nizhoucai@gmail.com">nizhoucai@gmail.com</a></p>
+  </footer>
 </body>
+
+</html>
