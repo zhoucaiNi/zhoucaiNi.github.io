@@ -289,6 +289,7 @@ main {
 /* On pages with a hero, the header floats over the scene so the sky runs
    all the way to the top of the page (no seam under the nav). */
 .page-projects .site-header,
+.page-about .site-header,
 .page-other .site-header {
   position: absolute;
   top: 0;
@@ -646,20 +647,71 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  width: min(760px, calc(100% - 32px));
-  padding: 1rem 0 3rem;
+  padding-bottom: 3rem;
 }
 
-.personal-pic {
+/* About opens on a small scene: Zhoucai as a figurine on a grassy stand,
+   framed by the side hills, under the same time-of-day sun as Projects. */
+.hero--about {
+  height: clamp(480px, 72vh, 720px);
+  height: clamp(480px, 72svh, 720px);
+}
+
+/* the sun keeps its time-of-day height but sits off to the side here,
+   so it doesn't crown the figure */
+.hero--about .sun {
+  left: 27%;
+  scale: 0.75;
+}
+
+/* the scene's bottom melts into the page, hills included, so there's no seam */
+.hero--about::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
+  height: 28%;
+  background: linear-gradient(to bottom, transparent, var(--page-bg));
+  pointer-events: none;
+}
+
+.figurine {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  z-index: 4;
+  width: clamp(180px, min(24vw, 34vh), 300px);
+  width: clamp(180px, min(24vw, 34svh), 300px);
+  translate: -50% 0;
+}
+
+.figurine .mii {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  margin-bottom: -18%;
+}
+
+.figurine .stand {
+  display: block;
+  width: 130%;
+  max-width: none;
+  height: auto;
+  margin-left: -15%;
+  filter: var(--illus-filter);
+}
+
+:root[data-theme='dark'] .figurine .mii {
+  filter: brightness(0.85) saturate(0.9);
 }
 
 .intro,
 .experience {
-  width: min(620px, 100%);
+  width: min(620px, calc(100% - 32px));
 }
+
 
 .intro h1 {
   color: var(--moss-ink);
@@ -873,7 +925,6 @@ main {
 
 /* ---------- night details ---------- */
 /* photos dim slightly at night so they don't glow like a lightbox */
-:root[data-theme='dark'] .personal-pic,
 :root[data-theme='dark'] .project-pic img {
   filter: brightness(0.85) saturate(0.95);
   transition: filter 0.8s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -910,6 +961,15 @@ main {
 
   .hero .front {
     display: none;
+  }
+
+  .hero--about {
+    height: clamp(420px, 60vh, 560px);
+    height: clamp(420px, 60svh, 560px);
+  }
+
+  .figurine {
+    width: clamp(180px, 52vw, 240px);
   }
 
   .project-overall {
@@ -1034,6 +1094,30 @@ main {
     transform: translateY(calc(var(--scroll, 0) * 0.08px));
   }
 
+  /* the figurine pops onto its stand, then breathes, blinks and waves */
+  .js .figurine {
+    animation: settle 1s cubic-bezier(0.3, 1.4, 0.5, 1) 0.6s backwards;
+  }
+
+  .figurine .mii {
+    animation: breathe 4s ease-in-out 1.6s infinite;
+    transform-origin: 50% 100%;
+  }
+
+  .figurine .wave-arm {
+    animation: wave-hand 3.2s ease-in-out 1.4s infinite;
+  }
+
+  .figurine .eyes {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 5s ease-in-out 2s infinite;
+  }
+
+  .figurine:hover .wave-arm {
+    animation-duration: 0.9s;
+  }
+
   /* lilies spin slowly, like before */
   .lily-1 {
     animation: rotate 60s linear infinite;
@@ -1130,6 +1214,55 @@ main {
   to {
     opacity: 1;
     translate: 0 0;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    translate: -50% 24px;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    scale: 1 1;
+  }
+
+  50% {
+    scale: 1.015 0.985;
+  }
+}
+
+@keyframes wave-hand {
+  0%,
+  55%,
+  100% {
+    rotate: 0deg;
+  }
+
+  10%,
+  30% {
+    rotate: -14deg;
+  }
+
+  20%,
+  40% {
+    rotate: 10deg;
+  }
+}
+
+@keyframes blink {
+  0%,
+  46%,
+  50%,
+  100% {
+    scale: 1 1;
+  }
+
+  48% {
+    scale: 1 0.1;
   }
 }
 
