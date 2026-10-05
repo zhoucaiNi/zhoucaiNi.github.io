@@ -289,7 +289,6 @@ main {
 /* On pages with a hero, the header floats over the scene so the sky runs
    all the way to the top of the page (no seam under the nav). */
 .page-projects .site-header,
-.page-about .site-header,
 .page-other .site-header {
   position: absolute;
   top: 0;
@@ -650,39 +649,61 @@ main {
   padding-bottom: 3rem;
 }
 
-/* About opens on a small scene: Zhoucai as a figurine on a grassy stand,
-   framed by the side hills, under the same time-of-day sun as Projects. */
-.hero--about {
-  height: clamp(480px, 72vh, 720px);
-  height: clamp(480px, 72svh, 720px);
+/* About intro, like tiffanywang.me: a small square photo on the left and the
+   figurine on the right, spread across the text column, with the bio below. */
+.intro,
+.experience {
+  width: min(620px, calc(100% - 32px));
 }
 
-/* the sun keeps its time-of-day height but sits off to the side here,
-   so it doesn't crown the figure */
-.hero--about .sun {
-  left: 27%;
-  scale: 0.75;
+.intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'photo figure'
+    'text  text';
+  column-gap: 1.5rem;
+  align-items: end;
+  padding-top: 0.5rem;
 }
 
-/* the scene's bottom melts into the page, hills included, so there's no seam */
-.hero--about::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 3;
-  height: 28%;
-  background: linear-gradient(to bottom, transparent, var(--page-bg));
-  pointer-events: none;
+.intro-photo {
+  grid-area: photo;
+}
+
+.intro-text {
+  grid-area: text;
+}
+
+.personal-pic {
+  display: block;
+  width: 220px;
+  aspect-ratio: 1;
+  height: auto;
+  object-fit: cover;
+  object-position: 52% 45%;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.6rem 0 1.5rem;
+  color: var(--gray-ink);
+  font-size: 0.95rem;
+}
+
+.location svg {
+  width: 18px;
+  height: 18px;
+  color: var(--moss-ink);
 }
 
 .figurine {
-  position: absolute;
-  left: 50%;
-  bottom: 2%;
-  z-index: 4;
-  width: clamp(180px, min(24vw, 34vh), 300px);
-  width: clamp(180px, min(24vw, 34svh), 300px);
-  translate: -50% 0;
+  grid-area: figure;
+  justify-self: end;
+  width: 150px;
+  margin: 0 1.5rem 2.6rem 0;
 }
 
 .figurine .mii {
@@ -703,13 +724,9 @@ main {
   filter: var(--illus-filter);
 }
 
-:root[data-theme='dark'] .figurine .mii {
+:root[data-theme='dark'] .figurine .mii,
+:root[data-theme='dark'] .personal-pic {
   filter: brightness(0.85) saturate(0.9);
-}
-
-.intro,
-.experience {
-  width: min(620px, calc(100% - 32px));
 }
 
 
@@ -963,13 +980,17 @@ main {
     display: none;
   }
 
-  .hero--about {
-    height: clamp(420px, 60vh, 560px);
-    height: clamp(420px, 60svh, 560px);
+  .intro {
+    column-gap: 1.25rem;
+  }
+
+  .personal-pic {
+    width: min(180px, 44vw);
   }
 
   .figurine {
-    width: clamp(180px, 52vw, 240px);
+    width: min(130px, 30vw);
+    margin: 0 1rem 2.4rem 0;
   }
 
   .project-overall {
@@ -1220,7 +1241,7 @@ main {
 @keyframes settle {
   from {
     opacity: 0;
-    translate: -50% 24px;
+    translate: 0 24px;
   }
 }
 
