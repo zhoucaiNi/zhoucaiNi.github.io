@@ -1,25 +1,25 @@
 /* Original zhoucai.me design, made easier to read and use.
-   Bright colors are kept for illustrations and accents; the "-ink" versions
-   are the same hues darkened so text passes WCAG AA (4.5:1) on white. */
+   Every color comes from the illustrations (sky, sun, peach, hills, dusk);
+   the "-ink" versions are the same hues deepened so text passes WCAG AA (4.5:1).
+   Design system: https://claude.ai/artifact/AGGec2FyLSpLEFyWoz8yXb */
 :root {
   --sky: #72b8df;
   --sky-ink: #2b78a8;
-  --leaf: #64d350;
-  --leaf-ink: #2b7f1f;
+  --moss: #8fb021;
+  --moss-ink: #4f7a10;
   --sun: #fed377;
-  --sun-hover: #ffb921;
+  --sun-hover: #ffc548;
   --peach: #ffbb7a;
-  --peach-ink: #b35a12;
+  --peach-ink: #a2541a;
   --dusk: #6181b0;
-  --plum: #8b488b;
-  --ink: #000000;
-  --gray-ink: #6b6566;
+  --ink: #14212b;
+  --gray-ink: #55636e;
 
   /* theme tokens (day) */
   --page-bg: #ffffff;
-  --text: #000000;
+  --text: var(--ink);
   --card-bg: #ffffff;
-  --line: #e3e3e3;
+  --line: #e3e8ec;
   --pond-bg: var(--sky);
   --peach-bg: var(--peach);
   --dusk-bg: var(--dusk);
@@ -28,10 +28,10 @@
   --sun-glow: rgba(254, 211, 119, 0.6);
   --illus-filter: none;
   --stars: 0;
-  --focus: #1d4f73;
+  --focus: #2b78a8;
 
   --font-display: 'Jockey One', system-ui, sans-serif;
-  --font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   color-scheme: light;
 }
@@ -53,8 +53,7 @@
   --line: #2a3a52;
   --gray-ink: #a7b3c2;
   --sky-ink: #8fcaf0;
-  --leaf-ink: #8fe07f;
-  --plum: #d9a3d9;
+  --moss-ink: #b5d86a;
   --pond-bg: #1d4a69;
   --peach-bg: #5b3a26;
   --dusk-bg: #1b2846;
@@ -115,14 +114,21 @@ a {
   border-radius: 4px;
 }
 
+/* Jockey One is the display face: the name and big page headings only.
+   Everything else (nav, card titles, buttons, body) is Figtree. */
 h1,
-h2,
 .title,
-.site-nav a,
-.btn {
+.peach h2,
+.experience h2 {
   font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.06em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .sr-only {
@@ -197,6 +203,7 @@ h2,
 .title {
   font-size: 2rem;
   line-height: 1.2;
+  letter-spacing: 0.1em;
   text-decoration: none;
 }
 
@@ -222,7 +229,9 @@ h2,
   align-items: center;
   min-height: 44px;
   padding-inline: 0.5rem;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -246,14 +255,20 @@ h2,
 }
 
 .page-about {
-  --accent: var(--leaf);
-  --accent-ink: var(--leaf-ink);
+  --accent: var(--moss);
+  --accent-ink: var(--moss-ink);
 }
 
 .page-other {
   --accent: var(--peach);
   --accent-ink: var(--text);
   background: var(--dusk-bg);
+}
+
+/* the soft ink is too faint on the dusk sky, so the header there goes deeper */
+:root:not([data-theme='dark']) .page-other .site-header {
+  --text: #0b1219;
+  color: var(--text);
 }
 
 main {
@@ -353,9 +368,8 @@ main {
   border-radius: 999px;
   background: var(--card-bg);
   color: var(--text);
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  letter-spacing: 0.1em;
+  font-size: 1rem;
+  font-weight: 600;
   text-decoration: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 }
@@ -367,7 +381,7 @@ main {
 
 .scroll-cue:hover {
   background: var(--sun);
-  color: #000000;
+  color: #14212b;
 }
 
 /* ---------- blue project pond ---------- */
@@ -495,8 +509,8 @@ main {
 }
 
 .project-head h2 {
-  font-size: 1.6rem;
-  line-height: 1.2;
+  font-size: 1.4rem;
+  line-height: 1.25;
 }
 
 .project-date {
@@ -558,8 +572,9 @@ main {
   padding: 0.3rem 0.9rem;
   border-radius: 6px;
   background: var(--sun);
-  color: #000000;
-  font-size: 1.05rem;
+  color: #14212b;
+  font-size: 1rem;
+  font-weight: 600;
   text-decoration: none;
   transition: background-color 0.2s ease, transform 0.15s ease;
 }
@@ -620,9 +635,8 @@ main {
 }
 
 .intro h1 {
-  color: var(--leaf-ink);
+  color: var(--moss-ink);
   font-size: 2.2rem;
-  letter-spacing: 0.02em;
   line-height: 1.2;
 }
 
@@ -631,7 +645,7 @@ main {
 }
 
 .highlight {
-  color: var(--plum);
+  color: var(--moss-ink);
   font-weight: 700;
 }
 
@@ -645,7 +659,7 @@ main {
 }
 
 .contact a {
-  color: var(--leaf-ink);
+  color: var(--moss-ink);
   font-weight: 700;
 }
 
@@ -666,7 +680,7 @@ main {
 }
 
 .links a:hover {
-  background: color-mix(in srgb, var(--leaf) 25%, transparent);
+  background: color-mix(in srgb, var(--moss) 25%, transparent);
   transform: translateY(-2px);
 }
 
@@ -677,9 +691,8 @@ main {
 
 .experience h2 {
   margin-bottom: 1rem;
-  color: var(--leaf-ink);
+  color: var(--moss-ink);
   font-size: 1.8rem;
-  letter-spacing: 0.05em;
 }
 
 .timeline {
@@ -890,8 +903,7 @@ main {
   }
 
   .project-head h2 {
-    font-size: 1.3rem;
-    letter-spacing: 0.06em;
+    font-size: 1.2rem;
   }
 
   .project-date {
@@ -919,7 +931,7 @@ main {
   }
 
   .site-nav a {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .pond > h1 {
