@@ -851,6 +851,18 @@ main {
     width: 100%;
   }
 
+  /* stacked cards: every image gets the same frame so cards line up */
+  .project-pic img,
+  .project-pic--tall img {
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .project-pic--tall img {
+    object-position: 50% 30%;
+  }
+
   .lily {
     opacity: 0.4;
     width: 110px;
@@ -860,6 +872,50 @@ main {
 @media (max-width: 600px) {
   .title {
     font-size: 1.75rem;
+  }
+
+  /* project cards on phones */
+  .projects {
+    gap: 1.25rem;
+  }
+
+  .project-box {
+    gap: 0.6rem;
+    padding: 0.7rem 0.85rem 1rem;
+  }
+
+  .project-head {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+
+  .project-head h2 {
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+  }
+
+  .project-date {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  .project-overall {
+    gap: 0.85rem;
+  }
+
+  .project-detail {
+    gap: 0.5rem;
+  }
+
+  .project-tagline {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .btn {
+    align-self: stretch;
+    justify-content: center;
+    margin-top: 0.4rem;
   }
 
   .site-nav a {
