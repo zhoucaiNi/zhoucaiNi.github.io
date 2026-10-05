@@ -487,12 +487,13 @@ main {
   transform: scale(1.3);
 }
 
-/* Night mode: the cards are Mac windows, so they use Apple's dark-mode colors
-   (secondarySystemBackground, label, secondaryLabel, systemBlue, window buttons). */
+/* Night mode: the cards are Mac windows, so they use Apple's dark-mode surfaces
+   (secondarySystemBackground, label, secondaryLabel, window buttons). Taglines keep
+   the site's own soft sky blue instead of Apple's saturated systemBlue. */
 :root[data-theme='dark'] .project-box {
   --text: #ffffff;
   --gray-ink: rgba(235, 235, 245, 0.6);
-  --tagline: #0a84ff;
+  --tagline: #8fcaf0;
   --dot-red: #ff5f57;
   --dot-yellow: #febc2e;
   --dot-green: #28c840;
