@@ -456,21 +456,34 @@ main {
 }
 
 .dots span:nth-child(1) {
-  background: #ea8181;
+  background: var(--dot-red, #ea8181);
 }
 
 .dots span:nth-child(2) {
-  background: #f2d777;
+  background: var(--dot-yellow, #f2d777);
   transition-delay: 0.04s;
 }
 
 .dots span:nth-child(3) {
-  background: #6ed979;
+  background: var(--dot-green, #6ed979);
   transition-delay: 0.08s;
 }
 
 .project-box:hover .dots span {
   transform: scale(1.3);
+}
+
+/* Night mode: the cards are Mac windows, so they use Apple's dark-mode colors
+   (secondarySystemBackground, label, secondaryLabel, systemBlue, window buttons). */
+:root[data-theme='dark'] .project-box {
+  --text: #ffffff;
+  --gray-ink: rgba(235, 235, 245, 0.6);
+  --tagline: #0a84ff;
+  --dot-red: #ff5f57;
+  --dot-yellow: #febc2e;
+  --dot-green: #28c840;
+  background: #1c1c1e;
+  color: var(--text);
 }
 
 .project-head {
@@ -527,7 +540,7 @@ main {
 }
 
 .project-tagline {
-  color: var(--sky-ink);
+  color: var(--tagline, var(--sky-ink));
   font-weight: 700;
 }
 
