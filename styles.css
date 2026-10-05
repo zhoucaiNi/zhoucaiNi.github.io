@@ -546,11 +546,16 @@ main {
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* portrait photos are cropped square so the card doesn't get too tall */
-.project-pic--tall img {
-  aspect-ratio: 1;
+/* every card image gets the same 16:10 frame, cropped from the top
+   (screenshots) or around the subject (the portrait AR photo) */
+.project-pic img {
+  aspect-ratio: 16 / 10;
   object-fit: cover;
-  object-position: 50% 40%;
+  object-position: top;
+}
+
+.project-pic--tall img {
+  object-position: 50% 30%;
 }
 
 .project-box:hover .project-pic img {
@@ -873,18 +878,6 @@ main {
   .project-pic {
     flex-basis: auto;
     width: 100%;
-  }
-
-  /* stacked cards: every image gets the same frame so cards line up */
-  .project-pic img,
-  .project-pic--tall img {
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    object-position: top;
-  }
-
-  .project-pic--tall img {
-    object-position: 50% 30%;
   }
 
   .lily {
