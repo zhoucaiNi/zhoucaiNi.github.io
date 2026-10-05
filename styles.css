@@ -18,6 +18,7 @@
   /* theme tokens (day) */
   --page-bg: #ffffff;
   --text: var(--ink);
+  --heading: var(--ink);
   --card-bg: #ffffff;
   --line: #e3e8ec;
   --pond-bg: var(--sky);
@@ -48,12 +49,14 @@
 /* Night mode: automatic after dark, or when the visitor toggles it. */
 :root[data-theme='dark'] {
   --page-bg: #0f1a2b;
-  --text: #eef2f7;
+  /* "lights dimmed": headings 15.5:1, body 12:1, muted 6.7:1, never pure white */
+  --heading: #eef2f7;
+  --text: #d0d7e0;
   --card-bg: #172537;
   --line: #2a3a52;
-  --gray-ink: #a7b3c2;
+  --gray-ink: #94a1b2;
   --sky-ink: #8fcaf0;
-  --moss-ink: #b5d86a;
+  --moss-ink: #a9c47f;
   --pond-bg: #1d4a69;
   --peach-bg: #5b3a26;
   --dusk-bg: #1b2846;
@@ -129,6 +132,13 @@ h1,
 h2 {
   font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+h1,
+h2,
+.title,
+.timeline .role {
+  color: var(--heading);
 }
 
 .sr-only {
@@ -626,6 +636,7 @@ main {
 
 .site-footer p {
   margin-top: 0.5rem;
+  color: var(--gray-ink);
   font-size: 0.95rem;
 }
 
@@ -858,6 +869,36 @@ main {
 
 .film p {
   margin-top: 0.4rem;
+}
+
+/* ---------- night details ---------- */
+/* photos dim slightly at night so they don't glow like a lightbox */
+:root[data-theme='dark'] .personal-pic,
+:root[data-theme='dark'] .project-pic img {
+  filter: brightness(0.85) saturate(0.95);
+  transition: filter 0.8s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* one accent at night: green stays on headings and the nav only */
+:root[data-theme='dark'] .highlight {
+  color: var(--heading);
+}
+
+:root[data-theme='dark'] .contact a {
+  color: var(--heading);
+  text-decoration-color: var(--moss-ink);
+}
+
+/* timeline dots dim with the rest of the scene */
+:root[data-theme='dark'] .timeline li::before {
+  filter: brightness(0.85) saturate(0.85);
+}
+
+/* bold reads heavier on dark, so step it down */
+:root[data-theme='dark'] .timeline .role,
+:root[data-theme='dark'] .highlight,
+:root[data-theme='dark'] .contact a {
+  font-weight: 600;
 }
 
 /* ---------- small screens ---------- */
