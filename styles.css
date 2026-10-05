@@ -836,7 +836,8 @@ main {
   container-type: size;
 }
 
-.hero--lighthouse .lighthouse {
+.hero--lighthouse .lighthouse,
+.hero--lighthouse .lighthouse-light {
   --w: max(100cqw, 192.5cqh);
   position: absolute;
   bottom: 0;
@@ -846,8 +847,21 @@ main {
   max-width: none;
   height: auto;
   aspect-ratio: 1353 / 703;
+}
+
+.hero--lighthouse .lighthouse {
   filter: var(--illus-filter);
   transition: filter 0.8s ease;
+}
+
+/* The light sits on its own layers so the night filter doesn't dim it:
+   the back layer is behind the tower, the front one over it. */
+.hero--lighthouse .lighthouse-light--back {
+  z-index: 1;
+}
+
+.hero--lighthouse .lighthouse-light {
+  pointer-events: none;
 }
 
 .hero--lighthouse {
@@ -860,15 +874,23 @@ main {
   object-fit: contain;
 }
 
-.lighthouse .beam {
+.beam-day {
   transform-box: fill-box;
   transform-origin: right center;
 }
 
-/* at night the beam is lit, so it stays bright while the rest of the scene dims */
-:root[data-theme='dark'] .lighthouse .beam {
-  fill: #ffe3a3;
-  filter: brightness(1.6);
+/* by day the beam is a soft bar; at night the lamp is lit and the beam turns (site.js) */
+.night-light,
+:root[data-theme='dark'] .beam-day {
+  display: none;
+}
+
+:root[data-theme='dark'] .night-light {
+  display: inline;
+}
+
+.night-light .halo {
+  opacity: 0.35;
 }
 
 .peach {
@@ -1143,7 +1165,7 @@ main {
   }
 
   /* lighthouse: beam pulses, gulls glide */
-  .lighthouse .beam {
+  .beam-day {
     animation: beam 5s ease-in-out infinite;
   }
 
@@ -1151,7 +1173,8 @@ main {
     animation: glide 18s ease-in-out infinite alternate;
   }
 
-  .js .hero--lighthouse .lighthouse {
+  .js .hero--lighthouse .lighthouse,
+  .js .hero--lighthouse .lighthouse-light {
     animation: slide-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
   }
 
