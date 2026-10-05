@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" role="img" aria-labelledby="t">
+  <title id="t">Zhoucai as a little figurine: tan cap, sage sweatshirt, waving</title>
+  <!-- ground shadow -->
+  <ellipse cx="120" cy="306" rx="54" ry="8" fill="#000" opacity="0.12"/>
+  <!-- legs: dark pants, white socks, grey hiking shoes -->
+  <rect x="95" y="218" width="23" height="72" rx="11" fill="#30343a"/>
+  <rect x="122" y="218" width="23" height="72" rx="11" fill="#30343a"/>
+  <rect x="96" y="276" width="21" height="9" rx="3" fill="#f3f3f1"/>
+  <rect x="123" y="276" width="21" height="9" rx="3" fill="#f3f3f1"/>
+  <ellipse cx="104" cy="292" rx="17" ry="10" fill="#555a61"/>
+  <ellipse cx="136" cy="292" rx="17" ry="10" fill="#555a61"/>
+  <ellipse cx="104" cy="297" rx="17" ry="5" fill="#3e4247"/>
+  <ellipse cx="136" cy="297" rx="17" ry="5" fill="#3e4247"/>
+  <!-- left arm (resting) -->
+  <path d="M90 164 C78 180 74 198 76 214" stroke="#7d9683" stroke-width="20" stroke-linecap="round" fill="none"/>
+  <circle cx="76" cy="218" r="10" fill="#efc39b"/>
+  <!-- body: sage crewneck sweatshirt -->
+  <path d="M82 170 Q82 148 106 146 H134 Q158 148 158 170 V222 Q158 236 144 236 H96 Q82 236 82 222 Z" fill="#7d9683"/>
+  <rect x="84" y="224" width="72" height="12" rx="6" fill="#6c8473"/>
+  <path d="M106 147 Q120 160 134 147" stroke="#6c8473" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- right arm (waving), pivots at the shoulder -->
+  <g class="wave-arm" style="transform-origin: 150px 160px">
+    <path d="M150 162 C166 150 176 134 182 116" stroke="#7d9683" stroke-width="20" stroke-linecap="round" fill="none"/>
+    <circle cx="184" cy="108" r="11" fill="#efc39b"/>
+  </g>
+  <!-- head -->
+  <g class="head">
+    <circle cx="74" cy="104" r="9" fill="#e7b58c"/>
+    <circle cx="166" cy="104" r="9" fill="#e7b58c"/>
+    <ellipse cx="120" cy="100" rx="46" ry="47" fill="#efc39b"/>
+    <!-- short black hair at the temples, under the cap -->
+    <path d="M75 92 Q74 80 84 74 L94 76 Q86 86 86 100 Q80 100 76 106 Z" fill="#1f2024"/>
+    <path d="M165 92 Q166 80 156 74 L146 76 Q154 86 154 100 Q160 100 164 106 Z" fill="#1f2024"/>
+    <!-- tan baseball cap: six-panel crown, button, logo, and a short bill facing us -->
+    <path d="M74 90 Q72 46 120 42 Q168 46 166 90 Q120 80 74 90 Z" fill="#c8b185"/>
+    <path d="M120 43 V82 M96 50 Q92 66 92 86 M144 50 Q148 66 148 86" stroke="#b39c72" stroke-width="2" fill="none"/>
+    <circle cx="120" cy="44" r="4" fill="#b39c72"/>
+    <circle cx="120" cy="66" r="7" fill="#9a8762"/>
+    <path d="M84 88 Q120 78 156 88 Q160 98 148 101 Q120 107 92 101 Q80 98 84 88 Z" fill="#b39c72"/>
+    <path d="M90 96 Q120 103 150 96" stroke="#a08a63" stroke-width="2" fill="none"/>
+    <!-- face -->
+    <path d="M98 108 Q104 104 110 108" stroke="#1f2024" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M130 108 Q136 104 142 108" stroke="#1f2024" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <g class="eyes">
+      <ellipse cx="104" cy="118" rx="4.2" ry="5.6" fill="#1f2024"/>
+      <ellipse cx="136" cy="118" rx="4.2" ry="5.6" fill="#1f2024"/>
+      <circle cx="105.5" cy="116" r="1.4" fill="#fff"/>
+      <circle cx="137.5" cy="116" r="1.4" fill="#fff"/>
+    </g>
+    <path d="M118 124 Q120 128 122 124" stroke="#c98f6a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M109 133 Q120 142 131 133" stroke="#8a4a3a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <circle cx="94" cy="128" r="7" fill="#f08a8a" opacity="0.32"/>
+    <circle cx="146" cy="128" r="7" fill="#f08a8a" opacity="0.32"/>
+  </g>
+</svg>

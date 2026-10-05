@@ -1,0 +1,1330 @@
+/* Original zhoucai.me design, made easier to read and use.
+   Every color comes from the illustrations (sky, sun, peach, hills, dusk);
+   the "-ink" versions are the same hues deepened so text passes WCAG AA (4.5:1).
+   Design system: https://claude.ai/artifact/AGGec2FyLSpLEFyWoz8yXb */
+:root {
+  --sky: #72b8df;
+  --sky-ink: #2b78a8;
+  --moss: #8fb021;
+  --moss-ink: #4f7a10;
+  --sun: #fed377;
+  --sun-hover: #ffc548;
+  --peach: #ffbb7a;
+  --peach-ink: #a2541a;
+  --dusk: #6181b0;
+  --ink: #14212b;
+  --gray-ink: #55636e;
+
+  /* theme tokens (day) */
+  --page-bg: #ffffff;
+  --text: var(--ink);
+  --heading: var(--ink);
+  --card-bg: #ffffff;
+  --line: #e3e8ec;
+  --pond-bg: var(--sky);
+  --peach-bg: var(--peach);
+  --dusk-bg: var(--dusk);
+  --hero-sky: #ffffff;
+  --sun-color: var(--sun);
+  --sun-glow: rgba(254, 211, 119, 0.6);
+  --illus-filter: none;
+  --stars: 0;
+  --focus: #2b78a8;
+
+  --font-display: 'Jockey One', system-ui, sans-serif;
+  --font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  color-scheme: light;
+}
+
+/* Sky follows the visitor's local time (set in the <head> script). */
+:root[data-theme='light'][data-phase='dawn'] {
+  --hero-sky: linear-gradient(#ffd6b0, #fff3e6 45%, #ffffff 70%);
+}
+
+:root[data-theme='light'][data-phase='dusk'] {
+  --hero-sky: linear-gradient(#f4a582, #fcd5bd 45%, #ffffff 75%);
+}
+
+/* Night mode: automatic after dark, or when the visitor toggles it. */
+:root[data-theme='dark'] {
+  --page-bg: #0f1a2b;
+  /* "lights dimmed": headings 15.5:1, body 12:1, muted 6.7:1, never pure white */
+  --heading: #eef2f7;
+  --text: #d0d7e0;
+  --card-bg: #172537;
+  --line: #2a3a52;
+  --gray-ink: #94a1b2;
+  --sky-ink: #8fcaf0;
+  --moss-ink: #a9c47f;
+  --pond-bg: #1d4a69;
+  --peach-bg: #5b3a26;
+  --dusk-bg: #1b2846;
+  --hero-sky: linear-gradient(#0f1a2b, #1d3253 70%);
+  --sun-color: #f3ebd3;
+  --sun-glow: rgba(243, 235, 211, 0.35);
+  --illus-filter: brightness(0.62) saturate(0.85);
+  --stars: 1;
+  --focus: #8fcaf0;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  transition: background-color 0.8s ease, color 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Jockey One is the display face: the name and big page headings only.
+   Everything else (nav, card titles, buttons, body) is Figtree. */
+h1,
+.title,
+.peach h2,
+.experience h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1,
+h2,
+.title,
+.timeline .role {
+  color: var(--heading);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------- header: centered name + nav, as before ---------- */
+.site-header {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem 16px 0;
+  text-align: center;
+}
+
+/* day/night toggle, top right */
+.theme-toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: color-mix(in srgb, var(--sun) 45%, transparent);
+}
+
+.theme-toggle svg {
+  width: 24px;
+  height: 24px;
+}
+
+:root[data-theme='dark'] .theme-toggle .icon-moon,
+:root:not([data-theme='dark']) .theme-toggle .icon-sun {
+  display: none;
+}
+
+.title {
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.title .letter {
+  display: inline-block;
+}
+
+.title .space {
+  display: inline-block;
+  width: 0.35em;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 3vw;
+  list-style: none;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-nav a:hover {
+  text-decoration: underline wavy var(--sun);
+  text-underline-offset: 0.3em;
+}
+
+/* The current page keeps its color, plus an underline so it doesn't rely on color alone. */
+.site-nav a[aria-current='page'] {
+  color: var(--accent-ink);
+  text-decoration: underline wavy var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+}
+
+.page-projects {
+  --accent: var(--sky);
+  --accent-ink: var(--sky-ink);
+}
+
+.page-about {
+  --accent: var(--moss);
+  --accent-ink: var(--moss-ink);
+}
+
+.page-other {
+  --accent: var(--peach);
+  --accent-ink: var(--text);
+  background: var(--dusk-bg);
+}
+
+/* the soft ink is too faint on the dusk sky, so the header there goes deeper */
+:root:not([data-theme='dark']) .page-other .site-header {
+  --text: #0b1219;
+  color: var(--text);
+}
+
+main {
+  width: 100%;
+}
+
+/* ---------- full-screen illustrated hero ---------- */
+/* On pages with a hero, the header floats over the scene so the sky runs
+   all the way to the top of the page (no seam under the nav). */
+.page-projects .site-header,
+.page-other .site-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hero {
+  --header-h: 6rem;
+  position: relative;
+  width: 100%;
+  height: clamp(560px, 100vh, 1080px);
+  height: clamp(560px, 100svh, 1080px);
+  overflow: hidden;
+  background: var(--hero-sky);
+}
+
+.hero .stars {
+  position: absolute;
+  inset: 0 0 45% 0;
+  z-index: 0;
+  opacity: var(--stars);
+  transition: opacity 1s ease;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 20%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 24% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 38% 30%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 55% 6%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 68% 24%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 80% 12%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 92% 34%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 4% 40%, #fff 50%, transparent 51%);
+}
+
+.hero .layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  filter: var(--illus-filter);
+  transition: filter 0.8s ease;
+  pointer-events: none;
+}
+
+/* --sun-top comes from the visitor's local time */
+.hero .sun {
+  position: absolute;
+  top: calc(var(--header-h) + var(--sun-top, 2%));
+  left: 50%;
+  z-index: 1;
+  width: clamp(120px, 14vw, 200px);
+  aspect-ratio: 1;
+  margin-left: calc(clamp(120px, 14vw, 200px) / -2);
+  border-radius: 50%;
+  background: var(--sun-color);
+  box-shadow: 0 0 40px var(--sun-glow);
+  cursor: pointer;
+  transition: translate 0.6s cubic-bezier(0.5, 0, 0.75, 0), top 1s ease, background-color 0.8s ease;
+}
+
+.hero.is-setting .sun {
+  translate: 0 160%;
+}
+
+.hero .back {
+  z-index: 2;
+}
+
+.hero .front {
+  z-index: 3;
+}
+
+/* "See projects" cue at the bottom of the hero */
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.5rem;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.4rem 1.1rem;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.scroll-cue svg {
+  width: 18px;
+  height: 18px;
+}
+
+.scroll-cue:hover {
+  background: var(--sun);
+  color: #14212b;
+}
+
+/* ---------- blue project pond ---------- */
+.pond {
+  position: relative;
+  width: 100%;
+  padding: 2rem 0 3rem;
+  background: var(--pond-bg);
+  transition: background-color 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  scroll-margin-top: 0;
+}
+
+.pond > h1 {
+  position: relative;
+  z-index: 1;
+  font-size: 2.5rem;
+}
+
+.lily {
+  position: absolute;
+  z-index: 0;
+  filter: var(--illus-filter);
+  pointer-events: none;
+}
+
+.lily-1 {
+  left: 6%;
+  top: 4%;
+}
+
+.lily-2 {
+  right: 6%;
+  top: 40%;
+  scale: 0.9;
+}
+
+.lily-3 {
+  left: 4%;
+  bottom: 12%;
+  scale: 0.7;
+}
+
+.projects {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: min(960px, calc(100% - 32px));
+  list-style: none;
+}
+
+/* project card: the original "window" box with the three dots */
+.project-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem 1.1rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  scroll-margin-top: 1rem;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.project-box:hover,
+.project-box:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+}
+
+.dots span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.dots span:nth-child(1) {
+  background: var(--dot-red, #ea8181);
+}
+
+.dots span:nth-child(2) {
+  background: var(--dot-yellow, #f2d777);
+  transition-delay: 0.04s;
+}
+
+.dots span:nth-child(3) {
+  background: var(--dot-green, #6ed979);
+  transition-delay: 0.08s;
+}
+
+.project-box:hover .dots span {
+  transform: scale(1.3);
+}
+
+/* Night mode: the cards are Mac windows on Apple's dark surface (#1c1c1e).
+   Text hierarchy comes from one neutral at falling strengths, never pure white
+   (Material's 87/60 and Apple's label/secondaryLabel), with weights a step lighter
+   because bold reads heavier on dark: title 92% > body 80% > tagline 72% > meta 60%. */
+:root[data-theme='dark'] .project-box {
+  --text: rgba(255, 255, 255, 0.8);
+  --gray-ink: rgba(235, 235, 245, 0.6);
+  --tagline: rgba(235, 235, 245, 0.72);
+  --dot-red: #ff5f57;
+  --dot-yellow: #febc2e;
+  --dot-green: #28c840;
+  background: #1c1c1e;
+  color: var(--text);
+}
+
+:root[data-theme='dark'] .project-head h2 {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+}
+
+:root[data-theme='dark'] .project-tagline {
+  font-weight: 500;
+}
+
+.project-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 1rem;
+}
+
+.project-head h2 {
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+
+.project-date {
+  color: var(--gray-ink);
+}
+
+.project-overall {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.project-pic {
+  flex: 0 0 50%;
+  overflow: hidden;
+  border-radius: 10px;
+  align-self: flex-start;
+}
+
+.project-pic img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* every card image gets the same 16:10 frame, cropped from the top
+   (screenshots) or around the subject (the portrait AR photo) */
+.project-pic img {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+}
+
+.project-pic--tall img {
+  object-position: 50% 30%;
+}
+
+.project-box:hover .project-pic img {
+  transform: scale(1.04);
+}
+
+.project-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.project-tagline {
+  color: var(--tagline, var(--sky-ink));
+  font-weight: 700;
+}
+
+.project-tech {
+  color: var(--gray-ink);
+  font-size: 0.95rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 44px;
+  margin-top: auto;
+  padding: 0.3rem 0.9rem;
+  border-radius: 6px;
+  background: var(--sun);
+  color: #14212b;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn:hover {
+  background: var(--sun-hover);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* bottom nav, repeated from the top like the original */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 1.5rem 16px 2rem;
+  text-align: center;
+}
+
+.site-footer .site-nav a[aria-current='page'] {
+  color: inherit;
+}
+
+.page-projects .site-footer {
+  background: var(--pond-bg);
+}
+
+.page-other .site-footer {
+  background: var(--peach-bg);
+}
+
+.site-footer p {
+  margin-top: 0.5rem;
+  color: var(--gray-ink);
+  font-size: 0.95rem;
+}
+
+/* ---------- about page ---------- */
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+/* About intro, like tiffanywang.me: a small square photo on the left and the
+   figurine on the right, spread across the text column, with the bio below. */
+.intro,
+.experience {
+  width: min(620px, calc(100% - 32px));
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'photo figure'
+    'text  text';
+  column-gap: 1.5rem;
+  align-items: end;
+  padding-top: 0.5rem;
+}
+
+.intro-photo {
+  grid-area: photo;
+}
+
+.intro-text {
+  grid-area: text;
+}
+
+.personal-pic {
+  display: block;
+  width: 220px;
+  aspect-ratio: 1;
+  height: auto;
+  object-fit: cover;
+  object-position: 52% 45%;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.6rem 0 1.5rem;
+  color: var(--gray-ink);
+  font-size: 0.95rem;
+}
+
+.location svg {
+  width: 18px;
+  height: 18px;
+  color: var(--moss-ink);
+}
+
+.figurine {
+  grid-area: figure;
+  justify-self: end;
+  width: 150px;
+  margin: 0 -0.5rem 3.1rem 0;
+}
+
+.figurine .mii {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+:root[data-theme='dark'] .figurine .mii,
+:root[data-theme='dark'] .personal-pic {
+  filter: brightness(0.85) saturate(0.9);
+}
+
+
+.intro h1 {
+  color: var(--moss-ink);
+  font-size: 2.2rem;
+  line-height: 1.2;
+}
+
+.intro p {
+  margin-top: 0.75rem;
+}
+
+.highlight {
+  color: var(--moss-ink);
+  font-weight: 700;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 1.25rem;
+}
+
+.contact a {
+  color: var(--moss-ink);
+  font-weight: 700;
+}
+
+.links {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+}
+
+.links a {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  color: var(--text);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.links a:hover {
+  background: color-mix(in srgb, var(--moss) 25%, transparent);
+  transform: translateY(-2px);
+}
+
+.links svg {
+  width: 24px;
+  height: 24px;
+}
+
+.experience h2 {
+  margin-bottom: 1rem;
+  color: var(--moss-ink);
+  font-size: 1.8rem;
+}
+
+.timeline {
+  position: relative;
+  list-style: none;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 2px;
+  background: var(--line);
+}
+
+.timeline li {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline li + li {
+  margin-top: 1.4rem;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--dot, var(--sky));
+  box-shadow: 0 0 0 4px var(--page-bg);
+}
+
+.timeline .role {
+  font-weight: 700;
+}
+
+.timeline .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  color: var(--gray-ink);
+  font-size: 0.95rem;
+}
+
+/* ---------- other page: lighthouse ---------- */
+/* The lighthouse fills the hero like a cover image, but stays centered on the
+   tower (62% across the drawing) so it isn't cut off on narrow screens. */
+.hero--lighthouse {
+  container-type: size;
+}
+
+.hero--lighthouse .lighthouse {
+  --w: max(100cqw, 192.5cqh);
+  position: absolute;
+  bottom: 0;
+  left: clamp(calc(100cqw - var(--w)), calc(50cqw - 0.62 * var(--w)), 0px);
+  z-index: 2;
+  width: var(--w);
+  max-width: none;
+  height: auto;
+  aspect-ratio: 1353 / 703;
+  filter: var(--illus-filter);
+  transition: filter 0.8s ease;
+}
+
+.hero--lighthouse {
+  background: var(--dusk-bg);
+}
+
+.hero--lighthouse .gulls {
+  z-index: 3;
+  padding-inline: 10%;
+  object-fit: contain;
+}
+
+.lighthouse .beam {
+  transform-box: fill-box;
+  transform-origin: right center;
+}
+
+/* at night the beam is lit, so it stays bright while the rest of the scene dims */
+:root[data-theme='dark'] .lighthouse .beam {
+  fill: #ffe3a3;
+  filter: brightness(1.6);
+}
+
+.peach {
+  width: 100%;
+  padding: 2.5rem 0 1rem;
+  background: var(--peach-bg);
+  transition: background-color 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  scroll-margin-top: 0;
+}
+
+.peach h1,
+.peach h2 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.peach-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: min(900px, calc(100% - 32px));
+}
+
+.photo-widget {
+  width: 100%;
+  min-height: 200px;
+  padding: 0.75rem;
+  border-radius: 25px;
+  background: #ffffff;
+}
+
+.films {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .films {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.film iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 12px;
+}
+
+.film p {
+  margin-top: 0.4rem;
+}
+
+/* ---------- night details ---------- */
+/* photos dim slightly at night so they don't glow like a lightbox */
+:root[data-theme='dark'] .project-pic img {
+  filter: brightness(0.85) saturate(0.95);
+  transition: filter 0.8s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* one accent at night: green stays on headings and the nav only */
+:root[data-theme='dark'] .highlight {
+  color: var(--heading);
+}
+
+:root[data-theme='dark'] .contact a {
+  color: var(--heading);
+  text-decoration-color: var(--moss-ink);
+}
+
+/* timeline dots dim with the rest of the scene */
+:root[data-theme='dark'] .timeline li::before {
+  filter: brightness(0.85) saturate(0.85);
+}
+
+/* bold reads heavier on dark, so step it down */
+:root[data-theme='dark'] .timeline .role,
+:root[data-theme='dark'] .highlight,
+:root[data-theme='dark'] .contact a {
+  font-weight: 600;
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 900px) {
+  .hero {
+    height: clamp(500px, calc(75vh + 6rem), 800px);
+    height: clamp(500px, calc(75svh + 6rem), 800px);
+  }
+
+  .hero .front {
+    display: none;
+  }
+
+  .intro {
+    column-gap: 1.25rem;
+  }
+
+  .personal-pic {
+    width: min(180px, 44vw);
+  }
+
+  .figurine {
+    width: min(130px, 30vw);
+    margin: 0 -0.25rem 3rem 0;
+  }
+
+  .project-overall {
+    flex-direction: column;
+  }
+
+  .project-pic {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .lily {
+    opacity: 0.4;
+    width: 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 1.75rem;
+  }
+
+  /* project cards on phones */
+  .projects {
+    gap: 1.25rem;
+  }
+
+  .project-box {
+    gap: 0.6rem;
+    padding: 0.7rem 0.85rem 1rem;
+  }
+
+  .project-head {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+
+  .project-head h2 {
+    font-size: 1.2rem;
+  }
+
+  .project-date {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  .project-overall {
+    gap: 0.85rem;
+  }
+
+  .project-detail {
+    gap: 0.5rem;
+  }
+
+  .project-tagline {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .btn {
+    align-self: stretch;
+    justify-content: center;
+    margin-top: 0.4rem;
+  }
+
+  .site-nav a {
+    font-size: 1rem;
+  }
+
+  .pond > h1 {
+    font-size: 2rem;
+  }
+}
+
+/* ---------- motion: only when the visitor allows it ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  /* wavy name (inspired by tiffanywang.me) */
+  .title .letter {
+    animation: wave 2.6s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -0.12s);
+  }
+
+  .title:hover .letter {
+    animation-duration: 0.9s;
+  }
+
+  /* hero entrance: the sun rises, hills slide up, pads pop onto the water */
+  .js .hero .sun {
+    animation: sun-rise 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards, glow 6s ease-in-out 1.6s infinite;
+  }
+
+  .js .hero .back {
+    animation: slide-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards;
+  }
+
+  .js .hero .front {
+    animation: slide-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
+  }
+
+  .js .scroll-cue {
+    animation: fade-in 0.6s ease 1.4s backwards;
+  }
+
+  .scroll-cue svg {
+    animation: nudge 1.8s ease-in-out 2s infinite;
+  }
+
+  /* parallax while scrolling: --scroll is set by site.js */
+  .hero .sun {
+    transform: translateY(calc(var(--scroll, 0) * 0.45px));
+  }
+
+  .hero .back {
+    transform: translateY(calc(var(--scroll, 0) * 0.2px));
+  }
+
+  .hero .front {
+    transform: translateY(calc(var(--scroll, 0) * 0.08px));
+  }
+
+  /* the figurine pops in, then breathes, blinks and waves */
+  .js .figurine {
+    animation: settle 1s cubic-bezier(0.3, 1.4, 0.5, 1) 0.6s backwards;
+  }
+
+  .figurine .mii {
+    animation: breathe 4s ease-in-out 1.6s infinite;
+    transform-origin: 50% 100%;
+  }
+
+  .figurine .wave-arm {
+    animation: wave-hand 3.2s ease-in-out 1.4s infinite;
+  }
+
+  .figurine .eyes {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 5s ease-in-out 2s infinite;
+  }
+
+  .figurine:hover .wave-arm {
+    animation-duration: 0.9s;
+  }
+
+  /* lilies spin slowly, like before */
+  .lily-1 {
+    animation: rotate 60s linear infinite;
+  }
+
+  .lily-2 {
+    animation: rotate-back 70s linear infinite;
+  }
+
+  .lily-3 {
+    animation: rotate 80s linear infinite;
+  }
+
+  /* lighthouse: beam pulses, gulls glide */
+  .lighthouse .beam {
+    animation: beam 5s ease-in-out infinite;
+  }
+
+  .hero--lighthouse .gulls {
+    animation: glide 18s ease-in-out infinite alternate;
+  }
+
+  .js .hero--lighthouse .lighthouse {
+    animation: slide-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  }
+
+  /* cards and sections ease in as you scroll to them */
+  /* .reveal-ready is added by site.js, so cards stay visible if the script never runs */
+  .reveal-ready .reveal {
+    opacity: 0;
+    translate: 0 28px;
+    transition: opacity 0.7s ease, translate 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+  }
+
+  .reveal-ready .reveal.is-visible {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -0.12em;
+  }
+}
+
+@keyframes sun-rise {
+  from {
+    opacity: 0;
+    margin-top: 12%;
+  }
+
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 30px var(--sun-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 75px var(--sun-glow);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    translate: 0 12%;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    scale: 1 1;
+  }
+
+  50% {
+    scale: 1.015 0.985;
+  }
+}
+
+@keyframes wave-hand {
+  0%,
+  55%,
+  100% {
+    rotate: 0deg;
+  }
+
+  10%,
+  30% {
+    rotate: -14deg;
+  }
+
+  20%,
+  40% {
+    rotate: 10deg;
+  }
+}
+
+@keyframes blink {
+  0%,
+  46%,
+  50%,
+  100% {
+    scale: 1 1;
+  }
+
+  48% {
+    scale: 1 0.1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 4px;
+  }
+}
+
+@keyframes rotate {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes rotate-back {
+  to {
+    rotate: -360deg;
+  }
+}
+
+@keyframes beam {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scaleX(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes glide {
+  from {
+    translate: -6% 2%;
+  }
+
+  to {
+    translate: 6% -4%;
+  }
+}
