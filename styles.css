@@ -261,12 +261,21 @@ main {
 }
 
 /* ---------- full-screen illustrated hero ---------- */
+/* On pages with a hero, the header floats over the scene so the sky runs
+   all the way to the top of the page (no seam under the nav). */
+.page-projects .site-header,
+.page-other .site-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .hero {
+  --header-h: 6rem;
   position: relative;
   width: 100%;
-  height: clamp(480px, calc(100vh - 5.5rem), 1000px);
-  height: clamp(480px, calc(100svh - 5.5rem), 1000px);
-  margin-top: -1rem;
+  height: clamp(560px, 100vh, 1080px);
+  height: clamp(560px, 100svh, 1080px);
   overflow: hidden;
   background: var(--hero-sky);
 }
@@ -295,6 +304,7 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: bottom;
   filter: var(--illus-filter);
   transition: filter 0.8s ease;
   pointer-events: none;
@@ -303,7 +313,7 @@ main {
 /* --sun-top comes from the visitor's local time */
 .hero .sun {
   position: absolute;
-  top: var(--sun-top, 2%);
+  top: calc(var(--header-h) + var(--sun-top, 2%));
   left: 50%;
   z-index: 1;
   width: clamp(120px, 14vw, 200px);
@@ -811,8 +821,8 @@ main {
 /* ---------- small screens ---------- */
 @media (max-width: 900px) {
   .hero {
-    height: clamp(420px, 75vh, 700px);
-    height: clamp(420px, 75svh, 700px);
+    height: clamp(500px, calc(75vh + 6rem), 800px);
+    height: clamp(500px, calc(75svh + 6rem), 800px);
   }
 
   .hero .front {
