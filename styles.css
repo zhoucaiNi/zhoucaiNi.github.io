@@ -919,12 +919,124 @@ main {
   width: min(900px, calc(100% - 32px));
 }
 
-.photo-widget {
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
   width: 100%;
-  min-height: 200px;
-  padding: 0.75rem;
-  border-radius: 25px;
-  background: #ffffff;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .photo-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+.photo-grid a {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.photo-grid a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.photo-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.8s ease;
+}
+
+.photo-grid a:hover img {
+  transform: scale(1.05);
+}
+
+:root[data-theme='dark'] .photo-grid img {
+  filter: brightness(0.85) saturate(0.95);
+}
+
+/* full-size viewer (site.js); without the script the links just open the photo */
+.lightbox {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+}
+
+.lightbox::backdrop {
+  background: rgba(8, 12, 20, 0.92);
+}
+
+.lightbox figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.lightbox img {
+  max-width: min(92vw, 1600px);
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+}
+
+.lightbox figcaption {
+  color: #eef2f7;
+  font-size: 0.95rem;
+}
+
+.lightbox button {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightbox button:hover,
+.lightbox button:focus-visible {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-prev {
+  top: 50%;
+  left: 1rem;
+  translate: 0 -50%;
+}
+
+.lightbox-next {
+  top: 50%;
+  right: 1rem;
+  translate: 0 -50%;
+}
+
+.lightbox-close {
+  top: 1rem;
+  right: 1rem;
 }
 
 .films {

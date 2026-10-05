@@ -135,3 +135,46 @@ if (sweeps.length === 2 && halo && motionOK) {
   }
   sync();
 }
+
+// Photo viewer: grid links open in a dialog with previous/next, arrow keys, Esc and swipe.
+const grid = document.querySelector('.photo-grid');
+const viewer = document.querySelector('.lightbox');
+if (grid && viewer && viewer.showModal) {
+  const links = [...grid.querySelectorAll('a')];
+  const big = viewer.querySelector('img');
+  const caption = viewer.querySelector('.lightbox-caption');
+  let current = 0;
+  const show = (n) => {
+    current = (n + links.length) % links.length;
+    const thumb = links[current].querySelector('img');
+    big.src = links[current].href;
+    big.alt = thumb.alt;
+    caption.textContent = thumb.alt;
+  };
+  grid.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    e.preventDefault();
+    show(links.indexOf(link));
+    viewer.showModal();
+  });
+  viewer.querySelector('.lightbox-prev').addEventListener('click', () => show(current - 1));
+  viewer.querySelector('.lightbox-next').addEventListener('click', () => show(current + 1));
+  viewer.querySelector('.lightbox-close').addEventListener('click', () => viewer.close());
+  viewer.addEventListener('click', (e) => {
+    if (e.target === viewer) viewer.close();
+  });
+  viewer.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+  let touchX = null;
+  viewer.addEventListener('touchstart', (e) => (touchX = e.touches[0].clientX), { passive: true });
+  viewer.addEventListener('touchend', (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 40) show(dx < 0 ? current + 1 : current - 1);
+  });
+  viewer.addEventListener('close', () => links[current].focus());
+}
