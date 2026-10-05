@@ -58,7 +58,7 @@
   --pond-bg: #1d4a69;
   --peach-bg: #5b3a26;
   --dusk-bg: #1b2846;
-  --hero-sky: linear-gradient(#0b1424, #1d3253 70%);
+  --hero-sky: linear-gradient(#0f1a2b, #1d3253 70%);
   --sun-color: #f3ebd3;
   --sun-glow: rgba(243, 235, 211, 0.35);
   --illus-filter: brightness(0.62) saturate(0.85);
@@ -300,11 +300,11 @@ main {
   pointer-events: none;
 }
 
-/* --sun-top / --sun-left come from the visitor's local time */
+/* --sun-top comes from the visitor's local time */
 .hero .sun {
   position: absolute;
   top: var(--sun-top, 2%);
-  left: var(--sun-left, 50%);
+  left: 50%;
   z-index: 1;
   width: clamp(120px, 14vw, 200px);
   aspect-ratio: 1;
@@ -313,7 +313,7 @@ main {
   background: var(--sun-color);
   box-shadow: 0 0 40px var(--sun-glow);
   cursor: pointer;
-  transition: translate 0.6s cubic-bezier(0.5, 0, 0.75, 0), top 1s ease, left 1s ease, background-color 0.8s ease;
+  transition: translate 0.6s cubic-bezier(0.5, 0, 0.75, 0), top 1s ease, background-color 0.8s ease;
 }
 
 .hero.is-setting .sun {

@@ -24,14 +24,14 @@
       var phase = h < 5.5 || h >= 19.5 ? 'night' : h < 7.5 ? 'dawn' : h >= 17.5 ? 'dusk' : 'day';
       var natural = phase === 'night' ? 'dark' : 'light';
       theme = theme || natural;
-      // Where the sun (or moon) sits on its arc: 0 = rising on the left, 1 = setting on the right.
+      // How far along its arc the sun (or moon) is: 0 = rising, 0.5 = highest, 1 = setting.
+      // It stays centered like the original design; only its height follows the time.
       var p = theme !== natural ? 0.5 : theme === 'dark' ? ((h - 18 + 24) % 24) / 12 : (h - 6) / 12;
       p = Math.min(1, Math.max(0, p));
       var height = Math.sin(Math.PI * p);
       root.dataset.phase = phase;
       root.dataset.theme = theme;
-      root.style.setProperty('--sun-top', (2 + (1 - height) * 40).toFixed(1) + '%');
-      root.style.setProperty('--sun-left', (25 + p * 50).toFixed(1) + '%');
+      root.style.setProperty('--sun-top', (2 + (1 - height) * 26).toFixed(1) + '%');
     };
     document.documentElement.classList.add('js');
     var saved = null;
