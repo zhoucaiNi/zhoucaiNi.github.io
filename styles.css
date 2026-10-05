@@ -703,7 +703,7 @@ main {
   grid-area: figure;
   justify-self: end;
   width: 150px;
-  margin: 0 1.5rem 2.6rem 0;
+  margin: 0 -0.5rem 3.1rem 0;
 }
 
 .figurine .mii {
@@ -712,16 +712,6 @@ main {
   display: block;
   width: 100%;
   height: auto;
-  margin-bottom: -18%;
-}
-
-.figurine .stand {
-  display: block;
-  width: 130%;
-  max-width: none;
-  height: auto;
-  margin-left: -15%;
-  filter: var(--illus-filter);
 }
 
 :root[data-theme='dark'] .figurine .mii,
@@ -990,7 +980,7 @@ main {
 
   .figurine {
     width: min(130px, 30vw);
-    margin: 0 1rem 2.4rem 0;
+    margin: 0 -0.25rem 3rem 0;
   }
 
   .project-overall {
@@ -1115,7 +1105,7 @@ main {
     transform: translateY(calc(var(--scroll, 0) * 0.08px));
   }
 
-  /* the figurine pops onto its stand, then breathes, blinks and waves */
+  /* the figurine pops in, then breathes, blinks and waves */
   .js .figurine {
     animation: settle 1s cubic-bezier(0.3, 1.4, 0.5, 1) 0.6s backwards;
   }
