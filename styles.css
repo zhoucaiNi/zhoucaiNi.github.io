@@ -2,6 +2,10 @@
    Every color comes from the illustrations (sky, sun, peach, hills, dusk);
    the "-ink" versions are the same hues deepened so text passes WCAG AA (4.5:1).
    Design system: https://claude.ai/artifact/AGGec2FyLSpLEFyWoz8yXb */
+[hidden] {
+  display: none !important;
+}
+
 :root {
   --sky: #72b8df;
   --sky-ink: #2b78a8;
@@ -611,6 +615,527 @@ main {
 
 .btn:active {
   transform: scale(0.97);
+}
+
+/* ---------- projects: one Finder window ---------- */
+/* site.js builds this from the cards above and hides them; without the script the
+   cards stay. A list of projects on the left, the chosen one on the right like
+   Finder's Get Info, and the three window dots work: close, hide list, zoom. */
+.finder {
+  --f-bg: var(--card-bg);
+  --f-title: var(--heading);
+  --f-ink: var(--text);
+  --f-muted: var(--gray-ink);
+  --f-accent: var(--sky-ink);
+  --f-line: var(--line);
+  --f-side: #f4f8fb;
+  --f-hover: rgba(20, 33, 43, 0.06);
+  --f-select: var(--sky-ink);
+  --f-weight: 700;
+  --f-tagline-weight: 700;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(960px, calc(100% - 32px));
+  height: 620px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--f-bg);
+  color: var(--f-ink);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* night: Apple's dark window surfaces, like the cards */
+:root[data-theme='dark'] .finder {
+  --f-bg: #1c1c1e;
+  --f-title: rgba(255, 255, 255, 0.92);
+  --f-ink: rgba(255, 255, 255, 0.8);
+  --f-muted: rgba(235, 235, 245, 0.6);
+  --f-accent: rgba(235, 235, 245, 0.72);
+  --f-line: rgba(255, 255, 255, 0.1);
+  --f-side: #242426;
+  --f-hover: rgba(255, 255, 255, 0.06);
+  --f-select: #2a5f86;
+  --f-weight: 600;
+  --f-tagline-weight: 500;
+  --dot-red: #ff5f57;
+  --dot-yellow: #febc2e;
+  --dot-green: #28c840;
+}
+
+.finder.is-zoomed {
+  width: min(1180px, calc(100% - 32px));
+}
+
+.finder-toolbar {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid var(--f-line);
+}
+
+.finder-dots {
+  display: flex;
+  margin-left: -8px;
+}
+
+.finder-dots button {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.finder-dots button::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+/* the glyphs show on hover or focus, as on a Mac */
+.finder-dots button::after {
+  content: attr(data-glyph);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(0, 0, 0, 0.6);
+  font: 700 10px/1 system-ui, sans-serif;
+  opacity: 0;
+}
+
+.finder-dots:hover button::after,
+.finder-dots button:focus-visible::after {
+  opacity: 1;
+}
+
+.finder-close {
+  --c: var(--dot-red, #ea8181);
+}
+
+.finder-min {
+  --c: var(--dot-yellow, #f2d777);
+}
+
+.finder-zoom {
+  --c: var(--dot-green, #6ed979);
+}
+
+.finder-nav {
+  display: flex;
+}
+
+.finder-nav button,
+.finder-back {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.3rem;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--f-muted);
+  cursor: pointer;
+}
+
+.finder-nav button:hover:not(:disabled),
+.finder-back:hover {
+  background: var(--f-hover);
+  color: var(--f-ink);
+}
+
+.finder-nav button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.finder svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.finder-name {
+  overflow: hidden;
+  color: var(--f-title);
+  font-size: 1rem;
+  font-weight: var(--f-weight);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.finder-search {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 210px;
+  height: 32px;
+  padding: 0 0.55rem;
+  border: 1px solid var(--f-line);
+  border-radius: 8px;
+  background: var(--f-bg);
+  color: var(--f-muted);
+}
+
+.finder-search:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.finder-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--f-ink);
+  font: inherit;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.finder-main {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.finder.no-list .finder-main {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.finder.no-list .finder-list {
+  display: none;
+}
+
+.finder-list {
+  overflow: auto;
+  padding: 0.6rem 0.5rem;
+  border-right: 1px solid var(--f-line);
+  background: var(--f-side);
+}
+
+.finder-group {
+  margin: 0.65rem 0.55rem 0.3rem;
+  color: var(--f-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.finder-group:first-child {
+  margin-top: 0.1rem;
+}
+
+.finder-list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+}
+
+.finder-item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.35rem 0.45rem;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--f-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.finder-item:hover {
+  background: var(--f-hover);
+}
+
+.finder-item img {
+  width: 48px;
+  aspect-ratio: 16 / 10;
+  border-radius: 4px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.finder-item b,
+.finder-item small {
+  display: block;
+  overflow: hidden;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.finder-item b {
+  font-weight: 600;
+}
+
+.finder-item small {
+  color: var(--f-muted);
+  font-size: 0.8rem;
+}
+
+.finder-item[aria-selected='true'] {
+  background: var(--f-select);
+  color: #ffffff;
+}
+
+.finder-item[aria-selected='true'] small {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.finder-empty {
+  padding: 1rem 0.6rem;
+  color: var(--f-muted);
+  font-size: 0.9rem;
+}
+
+.finder-pane {
+  overflow: auto;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.finder-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.finder-back {
+  display: none;
+  justify-self: start;
+  gap: 0.2rem;
+  width: max-content;
+  padding: 0 0.5rem 0 0.2rem;
+  color: var(--f-accent);
+  font: inherit;
+  font-weight: 600;
+}
+
+.finder-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* image left, text right when the pane has room, like the cards */
+@container (min-width: 560px) {
+  .finder-info-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 1.5rem;
+  }
+}
+
+.finder-pic {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.finder-pic img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+}
+
+.finder-pic--tall img {
+  object-position: 50% 30%;
+}
+
+.finder-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.finder-text h2 {
+  color: var(--f-title);
+  font-size: 1.5rem;
+  font-weight: var(--f-weight);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.finder-tagline {
+  color: var(--f-accent);
+  font-weight: var(--f-tagline-weight);
+}
+
+.finder-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--f-line);
+  font-size: 0.92rem;
+}
+
+.finder-facts dt {
+  color: var(--f-muted);
+}
+
+.finder-facts dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.finder-text .btn {
+  margin-top: 0.3rem;
+}
+
+.finder-status {
+  padding: 0.3rem 0.9rem;
+  border-top: 1px solid var(--f-line);
+  color: var(--f-muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* closed: the window becomes a Projects folder on the pond */
+.finder-folder {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 120px;
+  margin-block: 2rem 4rem;
+  padding: 0.6rem 0.8rem;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--heading);
+  font: inherit;
+  cursor: pointer;
+}
+
+.finder-folder:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.finder-folder svg {
+  width: 72px;
+  height: 72px;
+  fill: var(--sun);
+  stroke: var(--heading);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.finder-folder b {
+  font-weight: 600;
+}
+
+.finder-folder small {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+:root[data-theme='dark'] .finder-pic img,
+:root[data-theme='dark'] .finder-item img {
+  filter: brightness(0.85) saturate(0.95);
+}
+
+/* phones: the list first, then the project, like the Files app */
+@media (max-width: 760px) {
+  .finder {
+    height: 640px;
+  }
+
+  .finder-toolbar {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .finder-nav {
+    display: none;
+  }
+
+  .finder-search {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .finder-main,
+  .finder.no-list .finder-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .finder-list {
+    border-right: 0;
+  }
+
+  .finder:not(.show-project) .finder-pane,
+  .finder.show-project .finder-list {
+    display: none;
+  }
+
+  .finder-back {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .finder-info {
+    padding: 1rem;
+  }
+
+  .finder-text .btn {
+    align-self: stretch;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .finder-info {
+    animation: finder-fade 0.2s ease;
+  }
+
+  .finder-folder:not([hidden]) {
+    animation: finder-pop 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  }
+}
+
+@keyframes finder-fade {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+@keyframes finder-pop {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
 }
 
 /* bottom nav, repeated from the top like the original */
