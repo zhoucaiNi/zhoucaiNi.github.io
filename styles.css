@@ -61,7 +61,8 @@
   --gray-ink: #94a1b2;
   --sky-ink: #8fcaf0;
   --moss-ink: #a9c47f;
-  --pond-bg: #1d4a69;
+  /* the lake in the night hero (sky through the night filter), so the band continues the water */
+  --pond-bg: #4c7186;
   --peach-bg: #5b3a26;
   --dusk-bg: #1b2846;
   --hero-sky: linear-gradient(#0f1a2b, #1d3253 70%);
@@ -1157,6 +1158,13 @@ main {
 
 .page-other .site-footer {
   background: var(--peach-bg);
+}
+
+/* the night pond band is lighter than the page, so its footer text uses the
+   heading color (4.7:1) instead of body and muted text */
+:root[data-theme='dark'] .page-projects .site-footer,
+:root[data-theme='dark'] .page-projects .site-footer p {
+  color: var(--heading);
 }
 
 .site-footer p {
