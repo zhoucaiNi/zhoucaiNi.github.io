@@ -1311,7 +1311,8 @@ main {
   background: var(--dusk-bg);
 }
 
-.hero--lighthouse .gulls {
+.hero--lighthouse .gulls,
+.hero--santorini .gulls {
   z-index: 3;
   padding-inline: 10%;
   object-fit: contain;
@@ -1719,7 +1720,8 @@ main {
 .hero--santorini .santorini {
   --w: max(100cqw, calc(1.903 * (100cqh - var(--header-h))));
   position: absolute;
-  bottom: 0;
+  /* overlap the band by a pixel so no seam shows where the sea meets it */
+  bottom: -1px;
   left: clamp(calc(100cqw - var(--w)), calc(50cqw - 0.3 * var(--w)), 0px);
   z-index: 2;
   width: var(--w);
@@ -1865,13 +1867,33 @@ main {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  /* phones: the sidebar becomes a compact header, so the bio starts on the first screen */
   .profile-side {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem 1rem;
+    padding: 1rem;
     border-right: 0;
     border-bottom: 1px solid var(--f-line);
   }
 
-  .profile-pics {
-    width: min(260px, 100%);
+  .profile-figurine {
+    right: -10px;
+    bottom: -12px;
+    width: 46px;
+  }
+
+  .profile-facts {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 1.1rem;
+    padding-top: 0.25rem;
+  }
+
+  .profile-facts li:first-child {
+    flex-basis: 100%;
   }
 
   .profile-pane {
@@ -2077,12 +2099,14 @@ main {
     animation: beam 5s ease-in-out infinite;
   }
 
-  .hero--lighthouse .gulls {
+  .hero--lighthouse .gulls,
+  .hero--santorini .gulls {
     animation: glide 18s ease-in-out infinite alternate;
   }
 
   .js .hero--lighthouse .lighthouse,
-  .js .hero--lighthouse .lighthouse-light {
+  .js .hero--lighthouse .lighthouse-light,
+  .js .hero--santorini .santorini {
     animation: slide-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
   }
 
