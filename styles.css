@@ -1311,8 +1311,7 @@ main {
   background: var(--dusk-bg);
 }
 
-.hero--lighthouse .gulls,
-.hero--santorini .gulls {
+.hero--lighthouse .gulls {
   z-index: 3;
   padding-inline: 10%;
   object-fit: contain;
@@ -1732,6 +1731,68 @@ main {
   transition: filter 0.8s ease;
 }
 
+/* At night the windows and doors light up one by one, like the village
+   turning its lights on. They sit on their own layer so the night filter
+   doesn't dim them. */
+.hero--santorini .santorini-lights {
+  z-index: 3;
+  filter: none;
+  pointer-events: none;
+}
+
+.santorini-lights path {
+  fill: #ffd98a;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+:root[data-theme='dark'] .santorini-lights {
+  filter: drop-shadow(0 0 6px rgba(255, 210, 120, 0.55));
+}
+
+:root[data-theme='dark'] .santorini-lights path {
+  opacity: 0.9;
+  transition-delay: calc(0.35s + var(--i) * 0.12s);
+}
+
+/* A small sailboat on the sea at the bottom of the hero; it crosses slowly
+   when motion is allowed. Its lantern sits outside the night filter so it
+   glows like the windows. */
+.hero--santorini .boat {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  z-index: 4;
+  width: clamp(80px, 10vw, 150px);
+  translate: 72vw 0;
+  pointer-events: none;
+}
+
+.boat svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: var(--illus-filter);
+  transition: filter 0.8s ease;
+}
+
+.boat-lantern {
+  position: absolute;
+  left: 47%;
+  top: 22%;
+  width: 7%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffd98a;
+  box-shadow: 0 0 10px 3px rgba(255, 210, 120, 0.6);
+  opacity: 0;
+  transition: opacity 0.6s ease 0.4s;
+}
+
+:root[data-theme='dark'] .boat-lantern {
+  opacity: 1;
+}
+
 /* the band continues the sea at the bottom of the drawing */
 .sea {
   display: flex;
@@ -2099,8 +2160,20 @@ main {
     animation: beam 5s ease-in-out infinite;
   }
 
-  .hero--lighthouse .gulls,
-  .hero--santorini .gulls {
+  .hero--santorini .boat {
+    animation: sail 70s linear -28s infinite;
+  }
+
+  .boat svg {
+    transform-origin: 50% 90%;
+    animation: rock 3.2s ease-in-out infinite;
+  }
+
+  :root[data-theme='dark'] .santorini-lights path:nth-child(5n + 3) {
+    animation: candle 4.5s ease-in-out calc(2.5s + var(--i) * 0.4s) infinite;
+  }
+
+  .hero--lighthouse .gulls {
     animation: glide 18s ease-in-out infinite alternate;
   }
 
@@ -2271,6 +2344,44 @@ main {
   50% {
     opacity: 1;
     transform: scaleX(1);
+  }
+}
+
+@keyframes sail {
+  from {
+    translate: 105vw 0;
+  }
+
+  to {
+    translate: -20vw 0;
+  }
+}
+
+@keyframes rock {
+  0%,
+  100% {
+    rotate: -2deg;
+    translate: 0 0;
+  }
+
+  50% {
+    rotate: 2deg;
+    translate: 0 2px;
+  }
+}
+
+@keyframes candle {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+
+  40% {
+    opacity: 0.65;
+  }
+
+  55% {
+    opacity: 0.95;
   }
 }
 
