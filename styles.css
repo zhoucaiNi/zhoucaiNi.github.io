@@ -61,14 +61,15 @@
   --gray-ink: #94a1b2;
   --sky-ink: #8fcaf0;
   --moss-ink: #a9c47f;
-  /* the lake in the night hero (sky through the night filter), so the band continues the water */
-  --pond-bg: #4c7186;
+  /* the color of the lake in the night hero (sky through --illus-filter), so the band continues the water */
+  --pond-bg: #305e77;
   --peach-bg: #5b3a26;
   --dusk-bg: #1b2846;
   --hero-sky: linear-gradient(#0f1a2b, #1d3253 70%);
   --sun-color: #f3ebd3;
   --sun-glow: rgba(243, 235, 211, 0.35);
-  --illus-filter: brightness(0.62) saturate(0.85);
+  /* night: darker but more saturated, so the scene reads as deep night, not grey */
+  --illus-filter: brightness(0.5) saturate(1.3);
   --stars: 1;
   --focus: #8fcaf0;
   color-scheme: dark;
@@ -1161,7 +1162,7 @@ main {
 }
 
 /* the night pond band is lighter than the page, so its footer text uses the
-   heading color (4.7:1) instead of body and muted text */
+   heading color (6.2:1) instead of body and muted text */
 :root[data-theme='dark'] .page-projects .site-footer,
 :root[data-theme='dark'] .page-projects .site-footer p {
   color: var(--heading);
