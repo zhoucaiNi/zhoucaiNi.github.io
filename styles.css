@@ -15,6 +15,9 @@
   --sun-hover: #ffc548;
   --peach: #ffbb7a;
   --peach-ink: #a2541a;
+  --sea: #354cd0;
+  --sea-ink: #2d47c4;
+  --blush: #fbc3b6;
   --dusk: #6181b0;
   --ink: #14212b;
   --gray-ink: #55636e;
@@ -28,6 +31,9 @@
   --pond-bg: var(--sky);
   --peach-bg: var(--peach);
   --dusk-bg: var(--dusk);
+  --sea-bg: var(--sea);
+  --on-sea: #ffffff;
+  --santorini-sky: var(--blush);
   --hero-sky: #ffffff;
   --sun-color: var(--sun);
   --sun-glow: rgba(254, 211, 119, 0.6);
@@ -61,10 +67,15 @@
   --gray-ink: #94a1b2;
   --sky-ink: #8fcaf0;
   --moss-ink: #a9c47f;
+  --sea-ink: #a9b8ff;
   /* the color of the lake in the night hero (sky through --illus-filter), so the band continues the water */
   --pond-bg: #305e77;
   --peach-bg: #5b3a26;
   --dusk-bg: #1b2846;
+  /* the Santorini sea after the night filter, so the band continues the water */
+  --sea-bg: #16257b;
+  --on-sea: #eef2f7;
+  --santorini-sky: linear-gradient(#0f1a2b, #1d3253 70%);
   --hero-sky: linear-gradient(#0f1a2b, #1d3253 70%);
   --sun-color: #f3ebd3;
   --sun-glow: rgba(243, 235, 211, 0.35);
@@ -128,7 +139,7 @@ a {
 h1,
 .title,
 .peach h2,
-.experience h2 {
+.profile-pane h2 {
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: 0.06em;
@@ -142,9 +153,12 @@ h2 {
 
 h1,
 h2,
-.title,
-.timeline .role {
+.title {
   color: var(--heading);
+}
+
+.timeline .role {
+  color: var(--f-title, var(--heading));
 }
 
 .sr-only {
@@ -271,8 +285,8 @@ h2,
 }
 
 .page-about {
-  --accent: var(--moss);
-  --accent-ink: var(--moss-ink);
+  --accent: var(--sea);
+  --accent-ink: var(--sea-ink);
 }
 
 .page-other {
@@ -295,6 +309,7 @@ main {
 /* On pages with a hero, the header floats over the scene so the sky runs
    all the way to the top of the page (no seam under the nav). */
 .page-projects .site-header,
+.page-about .site-header,
 .page-other .site-header {
   position: absolute;
   top: 0;
@@ -623,7 +638,9 @@ main {
 /* site.js builds this from the cards above and hides them; without the script the
    cards stay. A list of projects on the left, the chosen one on the right like
    Finder's Get Info, and the three window dots work: close, hide list, zoom. */
-.finder {
+/* window colors, shared by the Finder and the plain windows (.window) */
+.finder,
+.window {
   --f-bg: var(--card-bg);
   --f-title: var(--heading);
   --f-ink: var(--text);
@@ -635,6 +652,9 @@ main {
   --f-select: var(--sky-ink);
   --f-weight: 700;
   --f-tagline-weight: 700;
+}
+
+.finder {
   position: relative;
   z-index: 1;
   display: flex;
@@ -650,7 +670,8 @@ main {
 }
 
 /* night: Apple's dark window surfaces, like the cards */
-:root[data-theme='dark'] .finder {
+:root[data-theme='dark'] .finder,
+:root[data-theme='dark'] .window {
   --f-bg: #1c1c1e;
   --f-title: rgba(255, 255, 255, 0.92);
   --f-ink: rgba(255, 255, 255, 0.8);
@@ -1161,6 +1182,16 @@ main {
   background: var(--peach-bg);
 }
 
+.page-about .site-footer,
+.page-about .site-footer p {
+  background: var(--sea-bg);
+  color: var(--on-sea);
+}
+
+.page-about .site-footer .site-nav a[aria-current='page'] {
+  text-decoration-color: var(--sun);
+}
+
 /* the night pond band is lighter than the page, so its footer text uses the
    heading color (6.2:1) instead of body and muted text */
 :root[data-theme='dark'] .page-projects .site-footer,
@@ -1175,71 +1206,6 @@ main {
 }
 
 /* ---------- about page ---------- */
-.about {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  padding-bottom: 3rem;
-}
-
-/* About intro, like tiffanywang.me: a small square photo on the left and the
-   figurine on the right, spread across the text column, with the bio below. */
-.intro,
-.experience {
-  width: min(620px, calc(100% - 32px));
-}
-
-.intro {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-areas:
-    'photo figure'
-    'text  text';
-  column-gap: 1.5rem;
-  align-items: end;
-  padding-top: 0.5rem;
-}
-
-.intro-photo {
-  grid-area: photo;
-}
-
-.intro-text {
-  grid-area: text;
-}
-
-.personal-pic {
-  display: block;
-  width: 220px;
-  aspect-ratio: 1;
-  height: auto;
-  object-fit: cover;
-  object-position: 52% 45%;
-}
-
-.location {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin: 0.6rem 0 1.5rem;
-  color: var(--gray-ink);
-  font-size: 0.95rem;
-}
-
-.location svg {
-  width: 18px;
-  height: 18px;
-  color: var(--moss-ink);
-}
-
-.figurine {
-  grid-area: figure;
-  justify-self: end;
-  width: 150px;
-  margin: 0 -0.5rem 3.1rem 0;
-}
-
 .figurine .mii {
   position: relative;
   z-index: 1;
@@ -1249,70 +1215,13 @@ main {
 }
 
 :root[data-theme='dark'] .figurine .mii,
-:root[data-theme='dark'] .personal-pic {
+:root[data-theme='dark'] .profile-photo {
   filter: brightness(0.85) saturate(0.9);
 }
 
-
-.intro h1 {
-  color: var(--moss-ink);
-  font-size: 2.2rem;
-  line-height: 1.2;
-}
-
-.intro p {
-  margin-top: 0.75rem;
-}
-
 .highlight {
-  color: var(--moss-ink);
+  color: var(--accent-ink);
   font-weight: 700;
-}
-
-.contact {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  margin-top: 1.25rem;
-}
-
-.contact a {
-  color: var(--moss-ink);
-  font-weight: 700;
-}
-
-.links {
-  display: flex;
-  gap: 0.25rem;
-  list-style: none;
-}
-
-.links a {
-  display: inline-grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  color: var(--text);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.links a:hover {
-  background: color-mix(in srgb, var(--moss) 25%, transparent);
-  transform: translateY(-2px);
-}
-
-.links svg {
-  width: 24px;
-  height: 24px;
-}
-
-.experience h2 {
-  margin-bottom: 1rem;
-  color: var(--moss-ink);
-  font-size: 1.8rem;
 }
 
 .timeline {
@@ -1327,7 +1236,7 @@ main {
   top: 0.6rem;
   bottom: 0.6rem;
   width: 2px;
-  background: var(--line);
+  background: var(--f-line, var(--line));
 }
 
 .timeline li {
@@ -1348,7 +1257,7 @@ main {
   height: 16px;
   border-radius: 50%;
   background: var(--dot, var(--sky));
-  box-shadow: 0 0 0 4px var(--page-bg);
+  box-shadow: 0 0 0 4px var(--f-bg, var(--page-bg));
 }
 
 .timeline .role {
@@ -1359,7 +1268,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 0 1rem;
-  color: var(--gray-ink);
+  color: var(--f-muted, var(--gray-ink));
   font-size: 0.95rem;
 }
 
@@ -1598,6 +1507,234 @@ main {
   margin-top: 0.4rem;
 }
 
+/* ---------- windows ---------- */
+/* A plain Mac window like the Finder: three dots and a centered title on the bar.
+   The dots are decoration here; only the Finder's dots do something. */
+.window {
+  position: relative;
+  z-index: 1;
+  width: min(960px, calc(100% - 32px));
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--f-bg);
+  color: var(--f-ink);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.window-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--f-line);
+}
+
+.window-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.window-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--dot-red, #ea8181);
+}
+
+.window-dots span:nth-child(2) {
+  background: var(--dot-yellow, #f2d777);
+}
+
+.window-dots span:nth-child(3) {
+  background: var(--dot-green, #6ed979);
+}
+
+.window-title {
+  position: absolute;
+  left: 5.5rem;
+  right: 5.5rem;
+  overflow: hidden;
+  color: var(--f-title);
+  font-size: 1rem;
+  font-weight: var(--f-weight);
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ---------- about page: Santorini hero, sea band, profile window ---------- */
+/* The scene fills the width but sits below the header, centered on the domes
+   (30% across the drawing) so they stay in view on narrow screens. Its sky is
+   left out of the drawing so the hero can be pink by day and navy at night. */
+.hero--santorini {
+  container-type: size;
+  background: var(--santorini-sky);
+}
+
+.hero--santorini .santorini {
+  --w: max(100cqw, calc(1.903 * (100cqh - var(--header-h))));
+  position: absolute;
+  bottom: 0;
+  left: clamp(calc(100cqw - var(--w)), calc(50cqw - 0.3 * var(--w)), 0px);
+  z-index: 2;
+  width: var(--w);
+  max-width: none;
+  height: auto;
+  aspect-ratio: 1340 / 704;
+  filter: var(--illus-filter);
+  transition: filter 0.8s ease;
+}
+
+/* the band continues the sea at the bottom of the drawing */
+.sea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0 3rem;
+  background: var(--sea-bg);
+  color: var(--on-sea);
+  scroll-margin-top: 0;
+}
+
+.sea > h1 {
+  color: var(--on-sea);
+  font-size: 2.5rem;
+}
+
+.profile {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.profile-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.4rem 1.2rem;
+  border-right: 1px solid var(--f-line);
+  background: var(--f-side);
+}
+
+.profile-pics {
+  position: relative;
+}
+
+.profile-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: 52% 45%;
+}
+
+/* the figurine peeks over the photo's corner */
+.profile-figurine {
+  position: absolute;
+  right: -12px;
+  bottom: -16px;
+  width: 96px;
+}
+
+.profile-name {
+  color: var(--f-title);
+  font-size: 1.35rem;
+  font-weight: var(--f-weight);
+  line-height: 1.25;
+}
+
+.profile-role {
+  color: var(--f-muted);
+  font-size: 0.95rem;
+}
+
+.profile-facts {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--f-line);
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.profile-facts li,
+.profile-facts a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+}
+
+.profile-facts a {
+  color: var(--f-ink);
+  text-decoration: none;
+}
+
+.profile-facts a:hover {
+  color: var(--accent-ink);
+  text-decoration: underline;
+}
+
+.profile-facts svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--f-muted);
+}
+
+.profile-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1.5rem 1.8rem 1.8rem;
+}
+
+.profile-pane h2 {
+  color: var(--accent-ink);
+  font-size: 2.2rem;
+  line-height: 1.2;
+}
+
+.profile-pane h2 + p {
+  margin-top: 0.2rem;
+}
+
+.profile-pane p + h2 {
+  margin-top: 1rem;
+  font-size: 1.8rem;
+}
+
+.profile-pane .timeline {
+  margin-top: 0.4rem;
+}
+
+:root[data-theme='dark'] .profile-pane h2 {
+  color: var(--accent-ink);
+}
+
+@media (max-width: 760px) {
+  .profile {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profile-side {
+    border-right: 0;
+    border-bottom: 1px solid var(--f-line);
+  }
+
+  .profile-pics {
+    width: min(260px, 100%);
+  }
+
+  .profile-pane {
+    padding: 1.2rem 1rem 1.4rem;
+  }
+}
+
 /* ---------- night details ---------- */
 /* photos dim slightly at night so they don't glow like a lightbox */
 :root[data-theme='dark'] .project-pic img {
@@ -1607,12 +1744,7 @@ main {
 
 /* one accent at night: green stays on headings and the nav only */
 :root[data-theme='dark'] .highlight {
-  color: var(--heading);
-}
-
-:root[data-theme='dark'] .contact a {
-  color: var(--heading);
-  text-decoration-color: var(--moss-ink);
+  color: var(--f-title, var(--heading));
 }
 
 /* timeline dots dim with the rest of the scene */
@@ -1622,8 +1754,7 @@ main {
 
 /* bold reads heavier on dark, so step it down */
 :root[data-theme='dark'] .timeline .role,
-:root[data-theme='dark'] .highlight,
-:root[data-theme='dark'] .contact a {
+:root[data-theme='dark'] .highlight {
   font-weight: 600;
 }
 
@@ -1636,19 +1767,6 @@ main {
 
   .hero .front {
     display: none;
-  }
-
-  .intro {
-    column-gap: 1.25rem;
-  }
-
-  .personal-pic {
-    width: min(180px, 44vw);
-  }
-
-  .figurine {
-    width: min(130px, 30vw);
-    margin: 0 -0.25rem 3rem 0;
   }
 
   .project-overall {
