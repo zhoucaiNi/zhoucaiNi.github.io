@@ -1550,6 +1550,27 @@ main {
   background: var(--dot-green, #6ed979);
 }
 
+.window-body {
+  padding: 1rem;
+}
+
+.window-status {
+  padding: 0.3rem 0.9rem;
+  border-top: 1px solid var(--f-line);
+  color: var(--f-muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* windows inside a page column fill it */
+.peach-inner .window {
+  width: 100%;
+}
+
+.window .film p {
+  color: var(--f-ink);
+}
+
 .window-title {
   position: absolute;
   left: 5.5rem;
