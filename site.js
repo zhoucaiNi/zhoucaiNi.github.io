@@ -224,11 +224,7 @@ function buildFinder(list) {
   win.setAttribute('aria-label', 'Projects window');
   win.innerHTML = `
     <div class="finder-toolbar">
-      <div class="finder-dots" role="group" aria-label="Window buttons">
-        <button class="finder-close" type="button" data-glyph="×" aria-label="Close the projects window"></button>
-        <button class="finder-min" type="button" data-glyph="−" aria-label="Hide the project list" aria-pressed="false"></button>
-        <button class="finder-zoom" type="button" data-glyph="+" aria-label="Zoom the window wider" aria-pressed="false"></button>
-      </div>
+      <div class="window-dots"></div>
       <div class="finder-nav">
         <button type="button" class="finder-prev" aria-label="Back" disabled>${icon('m15 18-6-6 6-6')}</button>
         <button type="button" class="finder-next" aria-label="Forward" disabled>${icon('m9 18 6-6-6-6')}</button>
@@ -245,11 +241,6 @@ function buildFinder(list) {
       <div class="finder-pane" aria-live="polite"></div>
     </div>
     <p class="finder-status"></p>`;
-  const folder = make('button', 'finder-folder');
-  folder.type = 'button';
-  folder.hidden = true;
-  folder.setAttribute('aria-label', 'Open the projects window');
-  folder.innerHTML = `${icon('M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z')}<b>Projects</b><small>${projects.length} items</small>`;
 
   const $ = (sel) => win.querySelector(sel);
   const side = $('.finder-list');
@@ -397,13 +388,55 @@ function buildFinder(list) {
     if (i >= 0) open(visible[(i + (e.key === 'ArrowRight' ? 1 : -1) + visible.length) % visible.length]);
   });
 
-  // window dots: yellow hides the list, green zooms, red closes into a folder
-  const toggleButton = (sel, cls) => {
-    const button = $(sel);
-    button.addEventListener('click', () => button.setAttribute('aria-pressed', String(win.classList.toggle(cls))));
+  list.before(win);
+  list.hidden = true;
+  windowControls(win, { name: 'Projects', items: `${projects.length} items`, list: 'project list' });
+  renderList();
+
+  // links to a project (index.html#slider-fun) open it
+  const linked = projects.find((p) => `#${p.id}` === location.hash);
+  open(linked || order[0]);
+  if (linked) {
+    win.classList.add('show-project');
+    win.scrollIntoView({ block: 'center' });
+  }
+}
+
+// Window dots, shared by every window: red closes it into a folder on the band
+// (the folder opens it again), yellow hides its sidebar, green zooms it wider.
+// Static windows ship decorative dots; this swaps them for real buttons.
+function windowControls(win, { name, items, list }) {
+  const dots = win.querySelector('.window-dots');
+  if (!dots) return;
+  const button = (cls, glyph, label, pressed) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = cls;
+    b.dataset.glyph = glyph;
+    b.setAttribute('aria-label', label);
+    if (pressed) b.setAttribute('aria-pressed', 'false');
+    return b;
   };
-  toggleButton('.finder-min', 'no-list');
-  toggleButton('.finder-zoom', 'is-zoomed');
+  const close = button('finder-close', '×', `Close the ${name} window`);
+  const min = button('finder-min', '−', `Hide the ${list}`, true);
+  const zoom = button('finder-zoom', '+', 'Zoom the window wider', true);
+  dots.className = 'window-dots finder-dots';
+  dots.removeAttribute('aria-hidden');
+  dots.setAttribute('role', 'group');
+  dots.setAttribute('aria-label', 'Window buttons');
+  dots.replaceChildren(close, min, zoom);
+
+  [[min, 'no-list'], [zoom, 'is-zoomed']].forEach(([b, cls]) =>
+    b.addEventListener('click', () => b.setAttribute('aria-pressed', String(win.classList.toggle(cls)))),
+  );
+
+  const folder = document.createElement('button');
+  folder.type = 'button';
+  folder.className = 'finder-folder';
+  folder.hidden = true;
+  folder.setAttribute('aria-label', `Open the ${name} window`);
+  folder.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg><b>${name}</b><small>${items}</small>`;
+  win.before(folder);
 
   const easing = 'cubic-bezier(0.4, 0, 0.2, 1)';
   const towardFolder = () => {
@@ -416,7 +449,7 @@ function buildFinder(list) {
     folder.style.visibility = '';
     return `translate(${f.left + f.width / 2 - (w.left + w.width / 2)}px, ${f.top + f.height / 2 - (w.top + w.height / 2)}px) scale(0.06)`;
   };
-  $('.finder-close').addEventListener('click', () => {
+  close.addEventListener('click', () => {
     let done = false;
     const finish = () => {
       if (done) return;
@@ -438,18 +471,39 @@ function buildFinder(list) {
     win.hidden = false;
     const from = towardFolder();
     if (motionOK) win.animate([{ transform: from, opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 380, easing });
-    $('.finder-close').focus();
+    close.focus();
   });
+}
 
-  list.before(folder, win);
-  list.hidden = true;
-  renderList();
+// About: the profile window gets working dots
+const profileWindow = document.querySelector('.window--profile');
+if (profileWindow) windowControls(profileWindow, { name: 'About me', items: 'Profile', list: 'profile sidebar' });
 
-  // links to a project (index.html#slider-fun) open it
-  const linked = projects.find((p) => `#${p.id}` === location.hash);
-  open(linked || order[0]);
-  if (linked) {
-    win.classList.add('show-project');
-    win.scrollIntoView({ block: 'center' });
-  }
+// Other page: photos and films share one window; the library on the left picks
+// which collection shows. Without the script both show, one after the other.
+const media = document.querySelector('.window--media');
+if (media) {
+  const links = [...media.querySelectorAll('.media-link')];
+  const panels = [...media.querySelectorAll('.media-panel')];
+  const mediaTitle = media.querySelector('.window-title');
+  const mediaStatus = media.querySelector('.window-status');
+  const showPanel = (id) => {
+    const panel = panels.find((p) => p.id === id);
+    panels.forEach((p) => (p.hidden = p !== panel));
+    links.forEach((a) => (a.hash === `#${id}` ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+    const n = panel.querySelectorAll(':scope > ul > li').length;
+    const noun = id === 'films' ? 'film' : 'photo';
+    mediaTitle.textContent = panel.getAttribute('aria-label');
+    mediaStatus.textContent = `${n} ${noun}${n === 1 ? '' : 's'}`;
+  };
+  links.forEach((a) =>
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      showPanel(a.hash.slice(1));
+      history.replaceState(null, '', a.hash);
+    }),
+  );
+  showPanel(location.hash === '#films' ? 'films' : 'photos');
+  const total = panels.reduce((sum, p) => sum + p.querySelectorAll(':scope > ul > li').length, 0);
+  windowControls(media, { name: 'Photos and films', items: `${total} items`, list: 'library' });
 }

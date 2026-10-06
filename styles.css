@@ -1567,6 +1567,129 @@ main {
   width: 100%;
 }
 
+/* working dots (site.js): yellow hides the sidebar, green zooms the window wider */
+.window {
+  transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.window .finder-dots {
+  gap: 0;
+}
+
+.window.is-zoomed {
+  width: min(1180px, calc(100vw - 32px));
+}
+
+.window.no-list .profile,
+.window.no-list .media {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.window.no-list .profile-side,
+.window.no-list .media-side {
+  display: none;
+}
+
+/* Other page: one window for photos and films, the library on the left */
+.media {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  height: 600px;
+}
+
+.media-side {
+  padding: 0.6rem 0.5rem;
+  border-right: 1px solid var(--f-line);
+  background: var(--f-side);
+}
+
+.media-side ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+}
+
+.media-link {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  border-radius: 8px;
+  color: var(--f-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.media-link:hover {
+  background: var(--f-hover);
+}
+
+.media-link svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.media-link small {
+  color: var(--f-muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.media-link[aria-current='true'] {
+  background: var(--f-select);
+  color: #ffffff;
+}
+
+.media-link[aria-current='true'] small {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.media-pane {
+  overflow: auto;
+  padding: 1rem;
+}
+
+/* without the script both collections show, one after the other */
+.media-panel + .media-panel {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 760px) {
+  .media {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+
+  .media-side {
+    border-right: 0;
+    border-bottom: 1px solid var(--f-line);
+  }
+
+  .media-side .finder-group {
+    display: none;
+  }
+
+  .media-side ul {
+    flex-direction: row;
+  }
+
+  .media-side li {
+    flex: 1;
+  }
+
+  .media-pane {
+    overflow: visible;
+  }
+}
+
 .window .film p {
   color: var(--f-ink);
 }
