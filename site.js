@@ -483,7 +483,7 @@ if (profileWindow) windowControls(profileWindow, { name: 'About me', items: 'Pro
 // which collection shows. Without the script both show, one after the other.
 const media = document.querySelector('.window--media');
 if (media) {
-  const links = [...media.querySelectorAll('.media-link')];
+  const links = [...media.querySelectorAll('.media-link[href^="#"]')];
   const panels = [...media.querySelectorAll('.media-panel')];
   const mediaTitle = media.querySelector('.window-title');
   const mediaStatus = media.querySelector('.window-status');
