@@ -384,6 +384,25 @@ main {
   z-index: 3;
 }
 
+/* Townhouse: placed in background.svg's own coordinates (1728x806, cover,
+   bottom-centered) so it stays in the gap between the two tree clusters. */
+.hero--townhouse {
+  container-type: size;
+}
+
+.hero--townhouse .townhouse {
+  --s: max(calc(100cqw / 1728), calc(100cqh / 806));
+  position: absolute;
+  left: calc(50cqw + (703 - 864 - 170) * var(--s));
+  bottom: calc(239 * var(--s));
+  z-index: 3;
+  width: calc(340 * var(--s));
+  height: auto;
+  filter: var(--illus-filter);
+  transition: filter 0.8s ease;
+  pointer-events: none;
+}
+
 /* "See projects" cue at the bottom of the hero */
 .scroll-cue {
   position: absolute;
@@ -2093,6 +2112,10 @@ main {
     animation: slide-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards;
   }
 
+  .js .hero--townhouse .townhouse {
+    animation: townhouse-rise 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards;
+  }
+
   .js .hero .front {
     animation: slide-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
   }
@@ -2110,7 +2133,8 @@ main {
     transform: translateY(calc(var(--scroll, 0) * 0.45px));
   }
 
-  .hero .back {
+  .hero .back,
+  .hero .townhouse {
     transform: translateY(calc(var(--scroll, 0) * 0.2px));
   }
 
@@ -2241,6 +2265,19 @@ main {
 
   50% {
     box-shadow: 0 0 75px var(--sun-glow);
+  }
+}
+
+/* same rise as the back layer, which is as tall as the hero */
+@keyframes townhouse-rise {
+  from {
+    opacity: 0;
+    translate: 0 12cqh;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
   }
 }
 
