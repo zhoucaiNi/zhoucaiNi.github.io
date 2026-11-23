@@ -1,0 +1,3 @@
+.townhouse-art { position: absolute; inset: auto 0 0; z-index: 0; pointer-events: none; opacity: 0.98; }
+.townhouse-art svg { display: block; width: 100%; height: auto; max-height: 58vh; }
+.townhouse-shape { filter: drop-shadow(0 8px 0 rgba(65, 75, 55, 0.12)); }

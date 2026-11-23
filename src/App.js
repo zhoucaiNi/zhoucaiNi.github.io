@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import Education from './components/education/Education.js';
 import Experience from './components/experience/Experience.js';
 import Project from './components/project/Project.js';
+import TownhouseArt from './components/TownhouseArt';
 
 import {
   BrowserRouter as Router,
@@ -17,6 +18,7 @@ function Home() {
   return (
     <>
   <div id="rightContent">
+      <TownhouseArt />
       <Profile />
       <h1> About me </h1>
       </div>
