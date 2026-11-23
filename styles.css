@@ -399,8 +399,19 @@ main {
   width: calc(340 * var(--s));
   height: auto;
   filter: var(--illus-filter);
-  transition: filter 0.8s ease;
-  pointer-events: none;
+  transition: filter 0.8s ease, scale 0.25s ease;
+}
+
+.hero--townhouse .townhouse img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero--townhouse .townhouse:hover,
+.hero--townhouse .townhouse:focus-visible {
+  scale: 1.04;
+  transform-origin: 50% 100%;
 }
 
 /* "See projects" cue at the bottom of the hero */
