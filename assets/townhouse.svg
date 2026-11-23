@@ -1,0 +1,36 @@
+<svg width="340" height="256" viewBox="0 0 340 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- same rounded-tip pine as background.svg, tip at the origin, 120 tall -->
+<path id="pine" d="M-1.97 1.5C-1.58 -0.7 1.59 -0.7 1.97 1.5L22.2 117.7C22.4 118.9 21.47 120 20.2 120H-20.2C-21.47 120 -22.4 118.9 -22.2 117.7L-1.97 1.5Z"/>
+</defs>
+<!-- far pines, tucked behind the house like the tree clusters on the hills -->
+<use href="#pine" fill="#53660D" transform="translate(38 122) scale(0.95)"/>
+<use href="#pine" fill="#53660D" transform="translate(106 134) scale(0.85)"/>
+<use href="#pine" fill="#343C00" transform="translate(72 108) scale(1.05)"/>
+<use href="#pine" fill="#53660D" transform="translate(268 126) scale(0.9)"/>
+<use href="#pine" fill="#53660D" transform="translate(330 124) scale(0.92)"/>
+<use href="#pine" fill="#343C00" transform="translate(299 110) scale(1.04)"/>
+<!-- path running down toward the lake -->
+<path d="M156 232C155 240 152 246 146 252H194C188 246 186 240 186 232H156Z" fill="#BAD578"/>
+<!-- chimney -->
+<rect x="196" y="98" width="14" height="40" fill="#C98E6B"/>
+<rect x="193" y="94" width="20" height="7" rx="2" fill="#A87257"/>
+<!-- walls, gable included, in the sky's peach -->
+<path d="M115 232V158L170 104L225 158V232H115Z" fill="#F3C9A6"/>
+<path d="M115 158L170 104L225 158V166H115V158Z" fill="#E3A982"/>
+<!-- roof edge -->
+<path d="M102 168L170 97L238 168" stroke="#B5654A" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- windows pick up the lake blue -->
+<circle cx="170" cy="136" r="8" fill="#F8DFAB"/>
+<rect x="125" y="176" width="24" height="30" rx="4" fill="#F8DFAB"/>
+<rect x="191" y="176" width="24" height="30" rx="4" fill="#F8DFAB"/>
+<rect x="125" y="190" width="24" height="3" fill="#F3C9A6"/>
+<rect x="191" y="190" width="24" height="3" fill="#F3C9A6"/>
+<!-- door -->
+<path d="M154 232V206C154 195 161 189 170 189C179 189 186 195 186 206V232H154Z" fill="#343C00"/>
+<rect x="150" y="230" width="40" height="5" rx="2.5" fill="#BAD578"/>
+<!-- near pines and shrubs overlap the walls, so it sits among the trees -->
+<use href="#pine" fill="#53660D" transform="translate(80 150) scale(0.7)"/>
+<ellipse cx="141" cy="233" rx="12" ry="8" fill="#53660D"/>
+<ellipse cx="203" cy="234" rx="10" ry="7" fill="#718D14"/>
+</svg>
